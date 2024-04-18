@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = "WaveSO", menuName = "WaveSO", order = 0)]
 public class WaveSO : ScriptableObject
 {
     [SerializeField] private List<CreatureSO> creatures;
