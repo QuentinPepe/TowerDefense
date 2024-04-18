@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Grid
 {
@@ -27,7 +26,7 @@ namespace Grid
             {
                 stateMatrix[i] = 0;
             }
-            gridView.OnValidate();
+            gridView.UpdateGrid();
         }
 
         public int GetState(int x, int y)
@@ -41,7 +40,7 @@ namespace Grid
         {
             if (x < 0 || x >= Width || y < 0 || y >= Height) return;
             stateMatrix[y * Width + x] = state;
-            gridView.OnValidate();
+            gridView.UpdateGrid();
         }
     }
 }

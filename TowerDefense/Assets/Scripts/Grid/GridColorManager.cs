@@ -30,22 +30,22 @@ namespace Grid
             _gridController.OnHoverLeave -= HandleHoverLeave;
         }
 
-        private void HandleCellClick(int x, int y)
+        private void HandleCellClick(CellPosition position)
         {
-            if (_gridView.IsCellWalkable(x, y)) return;
-            SetCellColor(x, y, _clickColor);
+            if (_gridView.IsCellWalkable(position.X, position.Y)) return;
+            SetCellColor(position.X, position.Y, _clickColor);
         }
 
-        private void HandleHoverEnter(int x, int y)
+        private void HandleHoverEnter(CellPosition position)
         {
-            if (_gridView.IsCellWalkable(x, y)) return;
-            SetCellColor(x, y, _hoverColor);
+            if (_gridView.IsCellWalkable(position.X, position.Y)) return;
+            SetCellColor(position.X, position.Y, _hoverColor);
         }
 
-        private void HandleHoverLeave(int x, int y)
+        private void HandleHoverLeave(CellPosition position)
         {
-            if (_gridView.IsCellWalkable(x, y)) return;
-            SetCellColor(x, y, _defaultColor);
+            if (_gridView.IsCellWalkable(position.X, position.Y)) return;
+            SetCellColor(position.X, position.Y, _defaultColor);
         }
 
         private void SetCellColor(int x, int y, Color color)

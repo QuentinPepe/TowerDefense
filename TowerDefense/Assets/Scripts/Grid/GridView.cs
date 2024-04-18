@@ -43,7 +43,7 @@ namespace Grid
             UpdateGrid();
         }
 
-        private void UpdateGrid()
+        public void UpdateGrid()
         {
             ClearGrid();
             CreateGrid(width, height, cellSize);

@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System;
-using UnityEngine.Pool;
 
 namespace Grid
 {
@@ -11,14 +10,11 @@ namespace Grid
         private Camera _camera;
         private GridView _gridView;
 
-        public event Action<int, int> OnCellClick;
-        public event Action<int, int> OnHoverEnter;
-        public event Action<int, int> OnHoverStay;
-        public event Action<int, int> OnHoverLeave;
+        public event Action<CellPosition> OnCellClick;
+        public event Action<CellPosition> OnHoverEnter;
+        public event Action<CellPosition> OnHoverLeave;
 
-        private int? _lastHoveredX;
-        private int? _lastHoveredY;
-
+        private CellPosition? _lastHoveredPosition;
 
         private void Awake()
         {
@@ -36,22 +32,18 @@ namespace Grid
             Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
             if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer)) return;
             _gridView.GridModel.GetXY(hit.point, out int x, out int y);
+            CellPosition position = new CellPosition(x, y);
 
             if (Input.GetMouseButtonDown(0))
-                OnCellClick?.Invoke(x, y);
+                OnCellClick?.Invoke(position);
 
-            if (_lastHoveredX != x || _lastHoveredY != y)
+            if (!_lastHoveredPosition.HasValue || _lastHoveredPosition.Value != position)
             {
-                if (_lastHoveredX.HasValue && _lastHoveredY.HasValue)
-                    OnHoverLeave?.Invoke(_lastHoveredX.Value, _lastHoveredY.Value);
+                if (_lastHoveredPosition.HasValue)
+                    OnHoverLeave?.Invoke(_lastHoveredPosition.Value);
 
-                OnHoverEnter?.Invoke(x, y);
-                _lastHoveredX = x;
-                _lastHoveredY = y;
-            }
-            else
-            {
-                OnHoverStay?.Invoke(x, y);
+                OnHoverEnter?.Invoke(position);
+                _lastHoveredPosition = position;
             }
         }
     }
