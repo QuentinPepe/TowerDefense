@@ -1,18 +1,13 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaveSO : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+[CreateAssetMenu]
+public class WaveSO : ScriptableObject
+{
+    [SerializeField] private List<CreatureSO> creatures;
+    [SerializeField] private List<float> spawnIntervals;
+
+    public IEnumerable<CreatureSO> Creatures => creatures;
+    public IEnumerable<float> SpawnIntervals => spawnIntervals;
 }

@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CombatPhase : MonoBehaviour
+public class CombatPhase : IPhase
 {
-    // Start is called before the first frame update
-    void Start()
+    public CombatPhase(WaveSO currentWave)
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Update(WaveManager waveManager)
     {
-        
+        throw new System.NotImplementedException();
     }
 }
