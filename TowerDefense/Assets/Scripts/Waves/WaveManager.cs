@@ -13,8 +13,9 @@ namespace Waves
 
         private List<WaveSO> _waves;
         private int _currentWaveIndex = 0;
-        private WaveSO _currentWave;
         private IPhase _currentPhase;
+
+        public WaveSO CurrentWave { get; private set; }
 
         private void Start()
         {
@@ -41,8 +42,8 @@ namespace Waves
 
         public void StartWave()
         {
-            _currentWave = _waves[_currentWaveIndex];
-            _currentPhase = new CombatPhase(_currentWave);
+            CurrentWave = _waves[_currentWaveIndex];
+            _currentPhase = new CombatPhase(CurrentWave);
             OnWaveStarted?.Invoke();
         }
 
