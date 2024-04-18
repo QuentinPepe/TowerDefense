@@ -17,14 +17,30 @@ public class Game : MonoBehaviour
     public Action<int> OnScoreUpdated;
     public Action<int> OnMultiplierUpdated;
     public Action<int> OnCurrencyUpdated;
+    public static Game Instance { get; private set; }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
+        Instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void StartGame()
     {
+        //TODO
+    }
+
+    public void UpdateGame()
+    {
+        //TODO
+    }
+
+    public void HandleCreatureEliminated(Creature creature)
+    {
+        //TODO
+    }
+
+    public void HandleCreatureReachedEnd(Creature creature)
+    {
+        //TODO
     }
 }
