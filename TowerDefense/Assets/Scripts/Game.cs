@@ -14,6 +14,7 @@ public class Game : MonoBehaviour
     private int _score;
     private int _multiplier;
     private int _currency;
+    private IEnumerator _creatureSpawnCoroutine;
 
     public Action<int> OnScoreUpdated;
     public Action<int> OnMultiplierUpdated;
@@ -62,5 +63,11 @@ public class Game : MonoBehaviour
         else _multiplier--;
         _score += creature.Data.score * _multiplier;
         UpdateGame();
+    }
+
+    public void StartSpawnCreature(WaveSO currentWaveData)
+    {
+        _creatureSpawnCoroutine = _creatureManager.SpawnCoroutine(currentWaveData);
+        StartCoroutine(_creatureSpawnCoroutine);
     }
 }
