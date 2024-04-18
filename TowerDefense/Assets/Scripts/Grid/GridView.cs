@@ -1,7 +1,7 @@
-﻿using System;
-using Unity.AI.Navigation;
+﻿using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.Serialization;
 
 namespace Grid
 {
@@ -9,18 +9,20 @@ namespace Grid
     {
         public GridModel GridModel { get; private set; }
         private GameObject[,] _cells;
-        private NavMeshSurface _navMeshSurface;
 
+        [SerializeField] private NavMeshSurface navMeshSurface;
+        [SerializeField] private GridState gridState;
         [SerializeField] private int width = 11;
         [SerializeField] private int height = 11;
         [SerializeField] private float cellSize = 1f;
 
         private void Awake()
         {
+            gridState.InitializeMatrix(width, height);
             UpdateGrid();
         }
 
-        private void OnValidate()
+        public void OnValidate()
         {
             if (width < 1) width = 1;
             if (height < 1) height = 1;
@@ -31,13 +33,7 @@ namespace Grid
                 EditorApplication.delayCall += UpdateGridWhenPossible;
             }
 
-            if (_navMeshSurface == null)
-                _navMeshSurface = GetComponent<NavMeshSurface>();
-        }
-
-        private void OnDestroy()
-        {
-            EditorApplication.delayCall -= UpdateGridWhenPossible;
+            gridState.InitializeMatrix(width, height);
         }
 
         private void UpdateGridWhenPossible()
@@ -46,7 +42,6 @@ namespace Grid
             EditorApplication.delayCall -= UpdateGridWhenPossible;
             UpdateGrid();
         }
-
 
         private void UpdateGrid()
         {
@@ -73,10 +68,22 @@ namespace Grid
                     cell.name = $"Cell_{x}_{y}";
                     cell.layer = LayerMask.NameToLayer("Ground");
 
+                    NavMeshModifier navMeshModifier = cell.AddComponent<NavMeshModifier>();
+                    navMeshModifier.overrideArea = true;
+                    navMeshModifier.area = IsCellWalkable(x, y) ? 0 : 1;
+                    navMeshModifier.ignoreFromBuild = !IsCellWalkable(x, y);
+
+                    Renderer renderer = cell.GetComponent<Renderer>();
+                    Material tempMaterial = new Material(renderer.sharedMaterial)
+                    {
+                        color = IsCellWalkable(x, y) ? Color.gray : Color.white
+                    };
+                    renderer.sharedMaterial = tempMaterial;
+
                     _cells[x, y] = cell;
                 }
             }
-            _navMeshSurface.BuildNavMesh();
+            navMeshSurface.BuildNavMesh();
         }
 
         private void ClearGrid()
@@ -88,12 +95,15 @@ namespace Grid
                     DestroyImmediate(child.gameObject);
             }
         }
+        public bool IsCellWalkable(int x, int y)
+        {
+            return gridState.GetState(x, y) == 1;
+        }
 
         public GameObject GetCell(int x, int y)
         {
             if (x < 0 || x >= GridModel.Width || y < 0 || y >= GridModel.Height)
                 return null;
-
             return _cells[x, y];
         }
     }

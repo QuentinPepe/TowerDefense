@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System;
 
 namespace Grid
 {
@@ -33,16 +32,19 @@ namespace Grid
 
         private void HandleCellClick(int x, int y)
         {
+            if (_gridView.IsCellWalkable(x, y)) return;
             SetCellColor(x, y, _clickColor);
         }
 
         private void HandleHoverEnter(int x, int y)
         {
+            if (_gridView.IsCellWalkable(x, y)) return;
             SetCellColor(x, y, _hoverColor);
         }
 
         private void HandleHoverLeave(int x, int y)
         {
+            if (_gridView.IsCellWalkable(x, y)) return;
             SetCellColor(x, y, _defaultColor);
         }
 
