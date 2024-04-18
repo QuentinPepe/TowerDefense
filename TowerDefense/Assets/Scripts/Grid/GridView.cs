@@ -1,22 +1,68 @@
-﻿using UnityEngine;
+﻿using System;
+using Unity.AI.Navigation;
+using UnityEngine;
+using UnityEditor;
 
 namespace Grid
 {
     public class GridView : MonoBehaviour
     {
         public GridModel GridModel { get; private set; }
-        public GameObject[,] _cells;
+        private GameObject[,] _cells;
+        private NavMeshSurface _navMeshSurface;
 
-        public void CreateGrid(int width, int height, float cellSize)
+        [SerializeField] private int width = 11;
+        [SerializeField] private int height = 11;
+        [SerializeField] private float cellSize = 1f;
+
+        private void Awake()
         {
-            GridModel = new GridModel(width, height, cellSize);
-            CreateGrid();
+            UpdateGrid();
         }
 
-        private void CreateGrid()
+        private void OnValidate()
+        {
+            if (width < 1) width = 1;
+            if (height < 1) height = 1;
+            if (cellSize < 0.1f) cellSize = 0.1f;
+
+            if (!Application.isPlaying)
+            {
+                EditorApplication.delayCall += UpdateGridWhenPossible;
+            }
+
+            if (_navMeshSurface == null)
+                _navMeshSurface = GetComponent<NavMeshSurface>();
+        }
+
+        private void OnDestroy()
+        {
+            EditorApplication.delayCall -= UpdateGridWhenPossible;
+        }
+
+        private void UpdateGridWhenPossible()
+        {
+            if (this == null) return;
+            EditorApplication.delayCall -= UpdateGridWhenPossible;
+            UpdateGrid();
+        }
+
+
+        private void UpdateGrid()
+        {
+            ClearGrid();
+            CreateGrid(width, height, cellSize);
+        }
+
+        private void CreateGrid(int width, int height, float cellSize)
+        {
+            GridModel = new GridModel(width, height, cellSize);
+            BuildGrid();
+        }
+
+        private void BuildGrid()
         {
             _cells = new GameObject[GridModel.Width, GridModel.Height];
-
             for (int x = 0; x < GridModel.Width; x++)
             {
                 for (int y = 0; y < GridModel.Height; y++)
@@ -30,13 +76,25 @@ namespace Grid
                     _cells[x, y] = cell;
                 }
             }
+            _navMeshSurface.BuildNavMesh();
+        }
+
+        private void ClearGrid()
+        {
+            Transform[] children = GetComponentsInChildren<Transform>(true);
+            foreach (Transform child in children)
+            {
+                if (child != transform)
+                    DestroyImmediate(child.gameObject);
+            }
         }
 
         public GameObject GetCell(int x, int y)
         {
-            if (x < 0 || x >= _cells.GetLength(0) || y < 0 || y >= _cells.GetLength(1)) return null;
+            if (x < 0 || x >= GridModel.Width || y < 0 || y >= GridModel.Height)
+                return null;
+
             return _cells[x, y];
         }
-
     }
 }
