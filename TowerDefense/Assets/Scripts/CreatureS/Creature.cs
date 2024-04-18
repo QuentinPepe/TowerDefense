@@ -4,12 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Creature : MonoBehaviour
+public class Creature : LivingEntity
 {
     private NavMeshAgent _navMeshAgent;
     private CreatureSO _data;
     private int _currentHealth;
-    public Action<float> OnDamageTaken;
     public Action<Creature> OnCreatureEliminated;
     public Action<Creature> OnCreatureReachedEnd;
 
@@ -24,7 +23,7 @@ public class Creature : MonoBehaviour
         OnCreatureReachedEnd += Game.Instance.HandleCreatureReachedEnd;
     }
 
-    public void TakeDamage(int damage)
+    public override void TakeDamage(int damage)
     {
         _currentHealth -= damage;
         OnDamageTaken?.Invoke(_currentHealth / (float)_data.health);
