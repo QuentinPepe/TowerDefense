@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using UnityEngine.Pool;
 
 namespace Grid
 {
@@ -18,6 +19,7 @@ namespace Grid
         private int? _lastHoveredX;
         private int? _lastHoveredY;
 
+
         private void Awake()
         {
             _camera = Camera.main;
@@ -33,7 +35,6 @@ namespace Grid
         {
             Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
             if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer)) return;
-
             _gridView.GridModel.GetXY(hit.point, out int x, out int y);
 
             if (Input.GetMouseButtonDown(0))

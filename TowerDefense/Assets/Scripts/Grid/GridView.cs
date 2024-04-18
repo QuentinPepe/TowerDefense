@@ -1,17 +1,24 @@
-﻿using UnityEngine;
+﻿using System;
+using Unity.AI.Navigation;
+using UnityEngine;
 using UnityEditor;
 
 namespace Grid
 {
-    [ExecuteAlways]
     public class GridView : MonoBehaviour
     {
         public GridModel GridModel { get; private set; }
         private GameObject[,] _cells;
+        private NavMeshSurface _navMeshSurface;
 
         [SerializeField] private int width = 11;
         [SerializeField] private int height = 11;
         [SerializeField] private float cellSize = 1f;
+
+        private void Awake()
+        {
+            UpdateGrid();
+        }
 
         private void OnValidate()
         {
@@ -23,13 +30,23 @@ namespace Grid
             {
                 EditorApplication.delayCall += UpdateGridWhenPossible;
             }
+
+            if (_navMeshSurface == null)
+                _navMeshSurface = GetComponent<NavMeshSurface>();
+        }
+
+        private void OnDestroy()
+        {
+            EditorApplication.delayCall -= UpdateGridWhenPossible;
         }
 
         private void UpdateGridWhenPossible()
         {
+            if (this == null) return;
             EditorApplication.delayCall -= UpdateGridWhenPossible;
             UpdateGrid();
         }
+
 
         private void UpdateGrid()
         {
@@ -59,18 +76,16 @@ namespace Grid
                     _cells[x, y] = cell;
                 }
             }
+            _navMeshSurface.BuildNavMesh();
         }
 
         private void ClearGrid()
         {
-            if (_cells == null) return;
-            for (int x = 0; x < GridModel.Width; x++)
+            Transform[] children = GetComponentsInChildren<Transform>(true);
+            foreach (Transform child in children)
             {
-                for (int y = 0; y < GridModel.Height; y++)
-                {
-                    if (_cells[x, y] != null)
-                        DestroyImmediate(_cells[x, y]);
-                }
+                if (child != transform)
+                    DestroyImmediate(child.gameObject);
             }
         }
 
