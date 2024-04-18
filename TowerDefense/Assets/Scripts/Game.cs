@@ -24,6 +24,14 @@ public class Game : MonoBehaviour
         Instance = this;
     }
 
+    private void Start()
+    {
+        _score = 0;
+        _multiplier = 0;
+        _currency = 0;
+        UpdateGame();
+    }
+
     public void StartGame()
     {
         //TODO
@@ -31,16 +39,27 @@ public class Game : MonoBehaviour
 
     public void UpdateGame()
     {
-        //TODO
+        OnMultiplierUpdated?.Invoke(_multiplier);
+        OnScoreUpdated?.Invoke(_score);
+        OnCurrencyUpdated?.Invoke(_currency);
     }
 
     public void HandleCreatureEliminated(Creature creature)
     {
-        //TODO
+        _creatureManager.RemoveCreature(creature);
+        if (_multiplier < 0) _multiplier = 1;
+        else _multiplier++;
+        _score += creature.Data.score * _multiplier;
+        _currency += creature.Data.reward;
+        UpdateGame();
     }
 
     public void HandleCreatureReachedEnd(Creature creature)
     {
-        //TODO
+        _creatureManager.RemoveCreature(creature);
+        if (_multiplier > 0) _multiplier = -1;
+        else _multiplier--;
+        _score += creature.Data.score * _multiplier;
+        UpdateGame();
     }
 }

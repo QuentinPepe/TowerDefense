@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class Creature : LivingEntity
 {
     private NavMeshAgent _navMeshAgent;
-    private CreatureSO _data;
+    public CreatureSO Data { get; private set; }
     private int _currentHealth;
     public Action<Creature> OnCreatureEliminated;
     public Action<Creature> OnCreatureReachedEnd;
@@ -15,6 +15,8 @@ public class Creature : LivingEntity
     private void Awake()
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
+        _navMeshAgent.speed = Data.speed;
+        _currentHealth = Data.health;
     }
 
     private void Start()
@@ -26,7 +28,7 @@ public class Creature : LivingEntity
     public override void TakeDamage(int damage)
     {
         _currentHealth -= damage;
-        OnDamageTaken?.Invoke(_currentHealth / (float)_data.health);
+        OnDamageTaken?.Invoke(_currentHealth / (float)Data.health);
         if (_currentHealth <= 0)
         {
             OnCreatureEliminated?.Invoke(this);
