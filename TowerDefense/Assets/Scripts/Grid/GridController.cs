@@ -22,7 +22,6 @@ namespace Grid
         {
             _camera = Camera.main;
             _gridView = GetComponent<GridView>();
-            _gridView.CreateGrid(11, 11, 1f);
         }
 
         private void Update()
