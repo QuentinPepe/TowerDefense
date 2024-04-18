@@ -6,8 +6,8 @@ using UnityEngine;
 public class WaveSO : ScriptableObject
 {
     [SerializeField] private List<CreatureSO> creatures;
-    [SerializeField] private List<float> spawnIntervals;
+    [SerializeField] private float spawnInterval;
 
     public IEnumerable<CreatureSO> Creatures => creatures;
-    public IEnumerable<float> SpawnIntervals => spawnIntervals;
+    public float SpawnInterval => spawnInterval;
 }
