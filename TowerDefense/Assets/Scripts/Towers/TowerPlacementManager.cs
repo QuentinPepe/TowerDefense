@@ -43,11 +43,12 @@ namespace Towers
 
         private void ShowGhostTower(CellPosition position)
         {
+            if (_selectedTower.IsUnityNull()) return;
             if (_ghostTowerInstance.IsUnityNull()) return;
             Vector3 worldPosition = new Vector3(position.X, 0, position.Z);
             _ghostTowerInstance.transform.position = worldPosition;
             _ghostTowerInstance.SetActive(true);
-            UpdateGhostGroundColor(position);
+            UpdateGroundColor(position);
         }
 
         private void HideGhostTower(CellPosition position)
@@ -56,34 +57,32 @@ namespace Towers
             _ghostTowerInstance.SetActive(false);
         }
 
-        private void UpdateGhostGroundColor(CellPosition position)
+        private void UpdateGroundColor(CellPosition position)
         {
             // TODO: Implement this method
         }
 
         private void SetGhostTowerAppearance()
         {
-            if (_ghostTowerInstance.TryGetComponent(out Renderer renderer))
-            {
-                renderer.material.color = new Color(1, 1, 1, 0.5f); // Semi-transparent
-            }
+            // TODO: Make the ghost tower transparent
         }
 
         private void HandleCellPlacement(CellPosition position)
         {
             if (!CanPlaceTower(position)) return;
-            PlaceTower(position);
-            HideGhostTower(position);
+            if (!PlaceTower(position)) return;
+            Destroy(_ghostTowerInstance);
+            _selectedTower = null;
         }
 
         private bool CanPlaceTower(CellPosition position)
         {
-            return gridController.IsCellWalkable(position) && !towerManager.IsCellOccupied(position);
+            return !gridController.IsCellWalkable(position) && !towerManager.IsCellOccupied(position);
         }
 
-        private void PlaceTower(CellPosition position)
+        private bool PlaceTower(CellPosition position)
         {
-            towerManager.PlaceTower(_selectedTower, position);
+            return towerManager.PlaceTower(_selectedTower, position);
         }
     }
 }

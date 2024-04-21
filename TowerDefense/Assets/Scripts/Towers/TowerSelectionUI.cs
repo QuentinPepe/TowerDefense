@@ -43,17 +43,6 @@ namespace Towers
 
             _selectedTower = towerData[index];
             OnTowerSelected?.Invoke(_selectedTower);
-            HighlightSelectedTower(index);
-        }
-
-        private void HighlightSelectedTower(int index)
-        {
-            foreach (Button button in towerButtons)
-            {
-                button.interactable = true;
-            }
-
-            towerButtons[index].interactable = false;
         }
     }
 }

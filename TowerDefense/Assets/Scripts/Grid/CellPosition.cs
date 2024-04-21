@@ -20,6 +20,5 @@
         {
             return a.X == b.X && a.Z == b.Z;
         }
-        
     }
 }

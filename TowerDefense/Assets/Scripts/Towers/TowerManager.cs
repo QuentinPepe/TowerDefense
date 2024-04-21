@@ -18,23 +18,22 @@ namespace Towers
             _towers = new Dictionary<CellPosition, Tower>();
         }
 
-        public void PlaceTower(TowerSO towerData, CellPosition position)
+        public bool PlaceTower(TowerSO towerData, CellPosition position)
         {
             if (towerData.IsUnityNull() || !CanAfford(towerData.cost))
             {
-                Debug.LogError("Cannot place tower: Invalid data or insufficient funds.");
-                return;
+                return false;
             }
 
             Vector3 worldPosition = new Vector3(position.X, 0, position.Z);
 
             GameObject towerPrefab = towerData.prefab;
-            GameObject towerObject = Instantiate(towerPrefab, worldPosition, Quaternion.identity);
-
-            if (towerObject.TryGetComponent(out Tower newTower)) return;
+            GameObject towerObject = Instantiate(towerPrefab, worldPosition, Quaternion.identity, transform);
+            if (!towerObject.TryGetComponent(out Tower newTower)) throw new MissingComponentException("Tower component not found on tower prefab.");
             newTower.Initialize(towerData, position);
-            _towers[position] = newTower;
+            _towers.Add(position, newTower);
             OnTowerPlaced?.Invoke(newTower);
+            return true;
         }
 
         public void UpgradeTower(Tower tower)

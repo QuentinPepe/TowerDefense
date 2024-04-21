@@ -1,21 +1,25 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Grid
 {
     public class GridState : MonoBehaviour
     {
-        public int Width { get; private set; } = 11;
-        public int Height { get; private set; } = 11;
-
+        [SerializeField] private int width = 11;
+        [SerializeField] private int height = 11;
         [SerializeField] private int[] stateMatrix;
         [SerializeField] private GridView gridView;
 
+        public int Width => width;
+        public int Height => height;
+
         public void InitializeMatrix(int width, int height)
         {
-            if (width == Width && height == Height) return;
-            Width = width;
-            Height = height;
+            if (width == this.width && height == this.height) return;
+            Debug.Log($"Initializing grid with dimensions {width}x{height}");
+            this.width = width;
+            this.height = height;
             stateMatrix = new int[width * height];
             ResetMatrix();
         }
@@ -33,18 +37,18 @@ namespace Grid
         {
             int x = cellPosition.X;
             int z = cellPosition.Z;
-            if (x < 0 || x >= Width || z < 0 || z >= Height)
+            if (x < 0 || x >= width || z < 0 || z >= height)
                 throw new ArgumentOutOfRangeException("x and y must be within the grid boundaries.");
-            return stateMatrix[z * Width + x];
+            return stateMatrix[z * width + x];
         }
 
         private void SetState(CellPosition cellPosition, int state)
         {
             int x = cellPosition.X;
             int z = cellPosition.Z;
-            if (x < 0 || x >= Width || z < 0 || z >= Height)
+            if (x < 0 || x >= width || z < 0 || z >= height)
                 throw new ArgumentOutOfRangeException("x and y must be within the grid boundaries.");
-            stateMatrix[z * Width + x] = state;
+            stateMatrix[z * width + x] = state;
             gridView.UpdateGrid();
         }
 

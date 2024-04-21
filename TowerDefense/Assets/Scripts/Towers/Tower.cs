@@ -1,4 +1,5 @@
 using Grid;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Towers
@@ -10,19 +11,16 @@ namespace Towers
 
         private float _lastShotTime;
 
-        private void Start()
-        {
-            _lastShotTime = -Data.fireRate;
-        }
-
         private void Update()
         {
+            if (Data.IsUnityNull()) return;
             Shoot();
         }
         public void Initialize(TowerSO towerData, CellPosition cellPosition)
         {
             Data = towerData;
             CellPosition = cellPosition;
+            _lastShotTime = -Data.fireRate;
         }
 
         private void Shoot()
@@ -30,15 +28,13 @@ namespace Towers
             if (Time.time - _lastShotTime < Data.fireRate)
                 return;
 
-            Collider[] results = new Collider[10];
-            Physics.OverlapSphereNonAlloc(transform.position, Data.range, results);
-            foreach (Collider hitCollider in results)
-            {
-                if (!hitCollider.CompareTag("Enemy")) continue;
-                // TODO : Instantiate a projectile and shoot it towards the enemy
-                _lastShotTime = Time.time;
-                break;
-            }
+            Collider[] results = new Collider[1];
+            int size = Physics.OverlapSphereNonAlloc(transform.position, Data.range, results, LayerMask.GetMask("Enemy"));
+            if (size == 0) return;
+            GameObject enemy = results[0].gameObject;
+            // TODO : Instantiate a projectile and shoot it towards the enemy
+            _lastShotTime = Time.time;
+
         }
 
         public void Upgrade()

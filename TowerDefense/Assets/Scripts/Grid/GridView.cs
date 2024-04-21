@@ -33,13 +33,12 @@ namespace Grid
             {
                 EditorApplication.delayCall += UpdateGridWhenPossible;
             }
-
-            gridState.InitializeMatrix(width, height);
         }
 
         private void UpdateGridWhenPossible()
         {
             if (this == null) return;
+            gridState.InitializeMatrix(width, height);
             EditorApplication.delayCall -= UpdateGridWhenPossible;
             UpdateGrid();
         }
