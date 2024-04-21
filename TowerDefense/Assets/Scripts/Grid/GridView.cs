@@ -11,6 +11,7 @@ namespace Grid
         private GameObject[,] _cells;
 
         [SerializeField] private NavMeshSurface navMeshSurface;
+        [SerializeField] private GridController gridController;
         [SerializeField] private GridState gridState;
         [SerializeField] private int width = 11;
         [SerializeField] private int height = 11;
@@ -70,13 +71,15 @@ namespace Grid
 
                     NavMeshModifier navMeshModifier = cell.AddComponent<NavMeshModifier>();
                     navMeshModifier.overrideArea = true;
-                    navMeshModifier.area = IsCellWalkable(x, y) ? 0 : 1;
-                    navMeshModifier.ignoreFromBuild = !IsCellWalkable(x, y);
+
+                    CellPosition cellPosition = new CellPosition(x, y);
+                    navMeshModifier.area = gridController.IsCellWalkable(cellPosition) ? 0 : 1;
+                    navMeshModifier.ignoreFromBuild = !gridController.IsCellWalkable(cellPosition);
 
                     Renderer renderer = cell.GetComponent<Renderer>();
                     Material tempMaterial = new Material(renderer.sharedMaterial)
                     {
-                        color = IsCellWalkable(x, y) ? Color.gray : Color.white
+                        color = gridController.IsCellWalkable(cellPosition) ? Color.gray : Color.white
                     };
                     renderer.sharedMaterial = tempMaterial;
 
@@ -95,16 +98,11 @@ namespace Grid
                     DestroyImmediate(child.gameObject);
             }
         }
-        public bool IsCellWalkable(int x, int y)
+        public GameObject GetCell(CellPosition position)
         {
-            return gridState.GetState(x, y) == 1;
-        }
-
-        public GameObject GetCell(int x, int y)
-        {
-            if (x < 0 || x >= GridModel.Width || y < 0 || y >= GridModel.Height)
+            if (position.X < 0 || position.X >= GridModel.Width || position.Z < 0 || position.Z >= GridModel.Height)
                 return null;
-            return _cells[x, y];
+            return _cells[position.X, position.Z];
         }
     }
 }

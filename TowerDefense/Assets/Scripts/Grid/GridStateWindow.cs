@@ -41,22 +41,23 @@ namespace Grid
                 return;
             }
 
+            GridController gridController = _gridState.GetComponent<GridController>();
+
             EditorGUILayout.BeginVertical(GUI.skin.box, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
             GUILayout.Space(Padding);
             try
             {
-                for (int y = _gridState.Height - 1; y >= 0; y--)
+                for (int z = _gridState.Height - 1; z >= 0; z--)
                 {
                     EditorGUILayout.BeginHorizontal();
                     for (int x = 0; x < _gridState.Width; x++)
                     {
-                        int currentState = _gridState.GetState(x, y);
+                        CellPosition position = new CellPosition(x, z);
+                        int currentState = _gridState.GetState(position);
                         GUI.color = currentState == 1 ? Color.white : Color.black;
-                        if (GUILayout.Button("", GUILayout.Width(_buttonSize.x), GUILayout.Height(_buttonSize.y)))
-                        {
-                            _gridState.SetState(x, y, 1 - currentState);
-                            EditorUtility.SetDirty(_gridState);
-                        }
+                        if (!GUILayout.Button("", GUILayout.Width(_buttonSize.x), GUILayout.Height(_buttonSize.y))) continue;
+                        _gridState.SetWalkable(position, currentState == 0);
+                        EditorUtility.SetDirty(_gridState);
                     }
                     EditorGUILayout.EndHorizontal();
                 }

@@ -9,6 +9,7 @@ namespace Grid
 
         private Camera _camera;
         private GridView _gridView;
+        private GridState _gridState;
 
         public event Action<CellPosition> OnCellClick;
         public event Action<CellPosition> OnHoverEnter;
@@ -20,6 +21,7 @@ namespace Grid
         {
             _camera = Camera.main;
             _gridView = GetComponent<GridView>();
+            _gridState = GetComponent<GridState>();
         }
 
         private void Update()
@@ -37,14 +39,22 @@ namespace Grid
             if (Input.GetMouseButtonDown(0))
                 OnCellClick?.Invoke(position);
 
-            if (!_lastHoveredPosition.HasValue || _lastHoveredPosition.Value != position)
-            {
-                if (_lastHoveredPosition.HasValue)
-                    OnHoverLeave?.Invoke(_lastHoveredPosition.Value);
+            if (_lastHoveredPosition.HasValue && _lastHoveredPosition.Value == position) return;
+            if (_lastHoveredPosition.HasValue)
+                OnHoverLeave?.Invoke(_lastHoveredPosition.Value);
 
-                OnHoverEnter?.Invoke(position);
-                _lastHoveredPosition = position;
-            }
+            OnHoverEnter?.Invoke(position);
+            _lastHoveredPosition = position;
+        }
+
+        public bool IsCellWalkable(CellPosition cellPosition)
+        {
+            return _gridState.GetState(cellPosition) == 1;
+        }
+
+        public GameObject GetCell(CellPosition position)
+        {
+            return _gridView.GetCell(position);
         }
     }
 }

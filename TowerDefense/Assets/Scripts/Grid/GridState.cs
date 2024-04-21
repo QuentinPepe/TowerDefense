@@ -29,18 +29,28 @@ namespace Grid
             gridView.UpdateGrid();
         }
 
-        public int GetState(int x, int y)
+        public int GetState(CellPosition cellPosition)
         {
-            if (x < 0 || x >= Width || y < 0 || y >= Height)
+            int x = cellPosition.X;
+            int z = cellPosition.Z;
+            if (x < 0 || x >= Width || z < 0 || z >= Height)
                 throw new ArgumentOutOfRangeException("x and y must be within the grid boundaries.");
-            return stateMatrix[y * Width + x];
+            return stateMatrix[z * Width + x];
         }
 
-        public void SetState(int x, int y, int state)
+        private void SetState(CellPosition cellPosition, int state)
         {
-            if (x < 0 || x >= Width || y < 0 || y >= Height) return;
-            stateMatrix[y * Width + x] = state;
+            int x = cellPosition.X;
+            int z = cellPosition.Z;
+            if (x < 0 || x >= Width || z < 0 || z >= Height)
+                throw new ArgumentOutOfRangeException("x and y must be within the grid boundaries.");
+            stateMatrix[z * Width + x] = state;
             gridView.UpdateGrid();
+        }
+
+        public void SetWalkable(CellPosition cellPosition, bool walkable)
+        {
+            SetState(cellPosition, walkable ? 1 : 0);
         }
     }
 }

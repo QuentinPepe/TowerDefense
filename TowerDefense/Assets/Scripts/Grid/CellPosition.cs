@@ -3,22 +3,23 @@
     public struct CellPosition
     {
         public int X { get; set; }
-        public int Y { get; set; }
+        public int Z { get; set; }
 
-        public CellPosition(int x, int y)
+        public CellPosition(int x, int z)
         {
             X = x;
-            Y = y;
+            Z = z;
         }
 
         public static bool operator !=(CellPosition a, CellPosition b)
         {
-            return a.X != b.X || a.Y != b.Y;
+            return a.X != b.X || a.Z != b.Z;
         }
 
         public static bool operator ==(CellPosition a, CellPosition b)
         {
-            return a.X == b.X && a.Y == b.Y;
+            return a.X == b.X && a.Z == b.Z;
         }
+        
     }
 }

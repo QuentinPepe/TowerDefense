@@ -1,11 +1,11 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
 namespace Grid
 {
     public class GridColorManager : MonoBehaviour
     {
         private GridController _gridController;
-        private GridView _gridView;
         private readonly Color _defaultColor = Color.white;
         private readonly Color _hoverColor = Color.red;
         private readonly Color _clickColor = Color.blue;
@@ -13,7 +13,6 @@ namespace Grid
         private void Awake()
         {
             _gridController = GetComponent<GridController>();
-            _gridView = GetComponent<GridView>();
         }
 
         private void OnEnable()
@@ -32,28 +31,27 @@ namespace Grid
 
         private void HandleCellClick(CellPosition position)
         {
-            if (_gridView.IsCellWalkable(position.X, position.Y)) return;
-            SetCellColor(position.X, position.Y, _clickColor);
+            if (_gridController.IsCellWalkable(position)) return;
+            SetCellColor(position, _clickColor);
         }
 
         private void HandleHoverEnter(CellPosition position)
         {
-            if (_gridView.IsCellWalkable(position.X, position.Y)) return;
-            SetCellColor(position.X, position.Y, _hoverColor);
+            if (_gridController.IsCellWalkable(position)) return;
+            SetCellColor(position, _hoverColor);
         }
 
         private void HandleHoverLeave(CellPosition position)
         {
-            if (_gridView.IsCellWalkable(position.X, position.Y)) return;
-            SetCellColor(position.X, position.Y, _defaultColor);
+            if (_gridController.IsCellWalkable(position)) return;
+            SetCellColor(position, _defaultColor);
         }
 
-        private void SetCellColor(int x, int y, Color color)
+        private void SetCellColor(CellPosition position, Color color)
         {
-            GameObject cell = _gridView.GetCell(x, y);
-            if (cell == null) return;
-            Renderer cellRenderer = cell.GetComponent<Renderer>();
-            if (cellRenderer != null)
+            GameObject cell = _gridController.GetCell(position);
+            if (cell.IsUnityNull()) return;
+            if (cell.TryGetComponent(out Renderer cellRenderer))
             {
                 cellRenderer.material.color = color;
             }
