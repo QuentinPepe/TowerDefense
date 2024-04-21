@@ -49,7 +49,6 @@ namespace Towers
             OnTowerUpgraded?.Invoke(tower);
         }
 
-        // Sells the specified tower
         public void SellTower(Tower tower)
         {
             if (tower == null)
