@@ -1,18 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
-public class TowerSO : MonoBehaviour
+namespace Towers
 {
-    // Start is called before the first frame update
-    void Start()
+    [CreateAssetMenu(fileName = "New Tower", menuName = "Tower Defense/Tower")]
+    public class TowerSO : ScriptableObject
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public string towerName;
+        public GameObject prefab;
+        public int cost;
+        public int damage;
+        public float fireRate;  
+        public float range;
+        public TowerSO upgrade;  // Reference to an upgraded version of this tower
     }
 }

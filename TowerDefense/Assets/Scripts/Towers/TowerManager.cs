@@ -1,18 +1,76 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using Grid;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class TowerManager : MonoBehaviour
+namespace Towers
 {
-    // Start is called before the first frame update
-    void Start()
+    public class TowerManager : MonoBehaviour
     {
-        
-    }
+        private Dictionary<CellPosition, Tower> _towers;
+        public event Action<Tower> OnTowerPlaced;
+        public event Action<Tower> OnTowerUpgraded;
+        public event Action<Tower> OnTowerSold;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private void Awake()
+        {
+            _towers = new Dictionary<CellPosition, Tower>();
+        }
+
+        public void PlaceTower(TowerSO towerData, CellPosition position)
+        {
+            if (towerData.IsUnityNull() || !CanAfford(towerData.cost))
+            {
+                Debug.LogError("Cannot place tower: Invalid data or insufficient funds.");
+                return;
+            }
+
+            Vector3 worldPosition = new Vector3(position.X, 0, position.Z);
+
+            GameObject towerPrefab = towerData.prefab;
+            GameObject towerObject = Instantiate(towerPrefab, worldPosition, Quaternion.identity);
+
+            if (towerObject.TryGetComponent(out Tower newTower)) return;
+            newTower.Initialize(towerData, position);
+            _towers[position] = newTower;
+            OnTowerPlaced?.Invoke(newTower);
+        }
+
+        public void UpgradeTower(Tower tower)
+        {
+            if (tower == null || !tower.CanUpgrade() || !CanAfford(tower.Data.cost))
+            {
+                Debug.LogError("Cannot upgrade tower: Invalid tower or insufficient funds.");
+                return;
+            }
+
+            tower.Upgrade();
+            OnTowerUpgraded?.Invoke(tower);
+        }
+
+        // Sells the specified tower
+        public void SellTower(Tower tower)
+        {
+            if (tower == null)
+            {
+                Debug.LogError("Cannot sell tower: Invalid tower.");
+                return;
+            }
+
+            _towers.Remove(tower.CellPosition);
+            OnTowerSold?.Invoke(tower);
+            Destroy(tower.gameObject);
+        }
+
+        private bool CanAfford(int cost)
+        {
+            // TODO : player's currency check
+            return true;
+        }
+        public bool IsCellOccupied(CellPosition position)
+        {
+            return _towers.ContainsKey(position);
+        }
     }
 }
