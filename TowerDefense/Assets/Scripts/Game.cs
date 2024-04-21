@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Waves;
 
@@ -32,6 +33,12 @@ public class Game : MonoBehaviour
         _multiplier = 0;
         _currency = 0;
         UpdateGame();
+        _waveManager.OnWaveStarted += () =>
+        {
+            WaveSO currentWave = _waveManager.CurrentWave;
+            _uiManager.SetMaxCreature(currentWave.Creatures.Count());
+            _uiManager.UpdateWaveText(currentWave.WaveNumber);
+        };
     }
 
     public void StartGame()
