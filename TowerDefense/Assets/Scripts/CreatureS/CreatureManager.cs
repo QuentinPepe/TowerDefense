@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Pool;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using Waves;
 
 public class CreatureManager : MonoBehaviour
@@ -12,6 +14,11 @@ public class CreatureManager : MonoBehaviour
     private Dictionary<CreatureSO, ObjectPool<Creature>> _poolDictionary;
     private ObjectPool<Creature> _creaturePool;
     public Action<Creature> OnCreatureSpawned;
+
+    private void Start()
+    {
+        CreatePoolDictionary();
+    }
 
     private Creature SpawnCreature(CreatureSO creatureData, Vector3 spawnPosition, Vector3 target)
     {
@@ -37,6 +44,23 @@ public class CreatureManager : MonoBehaviour
         {
             SpawnCreature(creatureData, spawnPoint, targetPoint);
             yield return new WaitForSeconds(currentWaveData.SpawnInterval);
+        }
+    }
+
+    private void CreatePoolDictionary()
+    {
+        _poolDictionary = new Dictionary<CreatureSO, ObjectPool<Creature>>();
+        AsyncOperationHandle<IList<CreatureSO>> loadOperation =
+            Addressables.LoadAssetAsync<IList<CreatureSO>>("CreatureData");
+        foreach (CreatureSO creatureData in loadOperation.Result)
+        {
+            ObjectPool<Creature> creaturePool = new ObjectPool<Creature>(() =>
+            {
+                GameObject creatureObject = Instantiate(creatureData.prefab);
+                return creatureObject.GetComponent<Creature>();
+            }, (creature) => creature.gameObject.SetActive(true), 
+                (creature) => creature.gameObject.SetActive(false));
+            _poolDictionary.Add(creatureData, creaturePool);
         }
     }
 }
