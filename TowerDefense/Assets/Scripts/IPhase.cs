@@ -1,5 +1,7 @@
 using Waves;
 public interface IPhase
 {
-    void Update(WaveManager waveManager);
+    void OnEnter(WaveManager waveManager);
+    void Update();
+    void OnFinished();
 }

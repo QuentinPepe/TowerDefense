@@ -16,12 +16,15 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         Game.Instance.OnCurrencyUpdated += (currency) => UpdateText(currencyText, currency);
-        Game.Instance.OnScoreUpdated += (score) =>
-        {
+        Game.Instance.OnScoreUpdated += (score) => {
             UpdateText(scoreText, score);
-            _maxCreature--;
             UpdateText(remainingCreatureText, _maxCreature);
         };
+
+        Game.Instance.OnCreatureRemoved += () => {
+            _maxCreature--;
+        };
+
         Game.Instance.OnMultiplierUpdated += (multiplier) => UpdateText(multiplierText, multiplier);
     }
 

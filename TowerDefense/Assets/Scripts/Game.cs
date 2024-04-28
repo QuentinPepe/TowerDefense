@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using CreatureS;
 using Towers;
 using UnityEngine;
 using Waves;
@@ -18,6 +19,7 @@ public class Game : MonoBehaviour
     private int _currency;
     private IEnumerator _creatureSpawnCoroutine;
 
+    public Action OnCreatureRemoved;
     public Action<int> OnScoreUpdated;
     public Action<int> OnMultiplierUpdated;
     public Action<int> OnCurrencyUpdated;
@@ -34,8 +36,7 @@ public class Game : MonoBehaviour
         _multiplier = 0;
         _currency = 0;
         UpdateGame();
-        _waveManager.OnWaveStarted += () =>
-        {
+        _waveManager.OnWaveStarted += () => {
             WaveSO currentWave = _waveManager.CurrentWave;
             _uiManager.SetMaxCreature(currentWave.Creatures.Count());
             _uiManager.UpdateWaveText(currentWave.WaveNumber);
@@ -47,11 +48,12 @@ public class Game : MonoBehaviour
         //TODO
     }
 
-    public void UpdateGame()
+    private void UpdateGame()
     {
         OnMultiplierUpdated?.Invoke(_multiplier);
         OnScoreUpdated?.Invoke(_score);
         OnCurrencyUpdated?.Invoke(_currency);
+        OnCreatureRemoved?.Invoke();
     }
 
     public void HandleCreatureEliminated(Creature creature)

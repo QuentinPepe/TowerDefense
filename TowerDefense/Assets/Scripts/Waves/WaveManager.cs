@@ -17,6 +17,13 @@ namespace Waves
 
         public WaveSO CurrentWave { get; private set; }
 
+        [SerializeField] private GameObject placementPhaseUI;
+        [SerializeField] private GameObject defensePhaseUI;
+
+        public GameObject PlacementPhaseUI => placementPhaseUI;
+        public GameObject DefensePhaseUI => defensePhaseUI;
+
+
         private void Start()
         {
             LoadWavesFromAddressables();
@@ -40,38 +47,35 @@ namespace Waves
             }
         }
 
-        public void StartWave()
-        {
-            CurrentWave = _waves[_currentWaveIndex];
-            _currentPhase = new CombatPhase(CurrentWave);
-            OnWaveStarted?.Invoke();
-        }
-
         public void AdvanceToNextWave()
         {
             _currentWaveIndex++;
             if (_currentWaveIndex >= _waves.Count)
             {
-                // Toutes les vagues ont été terminées
+                // Toutes les vagues ont été terminées : TODO
                 return;
             }
 
             SwitchToPlacementPhase();
         }
 
-        public void SwitchToPlacementPhase()
+        private void SwitchToPlacementPhase()
         {
             _currentPhase = new PlacementPhase();
+            _currentPhase.OnEnter(this);
         }
 
         public void SwitchToDefensePhase()
         {
-            StartWave();
+            CurrentWave = _waves[_currentWaveIndex];
+            _currentPhase = new CombatPhase();
+            _currentPhase.OnEnter(this);
+            OnWaveStarted?.Invoke();
         }
 
         private void Update()
         {
-            _currentPhase.Update(this);
+            _currentPhase.Update();
         }
     }
 }

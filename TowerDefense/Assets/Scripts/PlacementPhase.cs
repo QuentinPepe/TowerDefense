@@ -1,8 +1,22 @@
 using Waves;
 public class PlacementPhase : IPhase
 {
-    public void Update(WaveManager waveManager)
+    private WaveManager _waveManager;
+
+    public void OnEnter(WaveManager waveManager)
     {
-        throw new System.NotImplementedException();
+        _waveManager = waveManager;
+        _waveManager.PlacementPhaseUI.SetActive(true);
+    }
+
+    public void Update()
+    {
+
+    }
+
+    public void OnFinished()
+    {
+        _waveManager.PlacementPhaseUI.SetActive(false);
+        _waveManager.SwitchToDefensePhase();
     }
 }
