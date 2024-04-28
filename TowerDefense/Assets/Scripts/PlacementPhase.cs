@@ -1,3 +1,4 @@
+using UnityEngine;
 using Waves;
 public class PlacementPhase : IPhase
 {
@@ -11,7 +12,10 @@ public class PlacementPhase : IPhase
 
     public void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.Space)) // En attendant un bouton UI
+        {
+            OnFinished();
+        }
     }
 
     public void OnFinished()

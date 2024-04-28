@@ -53,7 +53,6 @@ public class Game : MonoBehaviour
         OnMultiplierUpdated?.Invoke(_multiplier);
         OnScoreUpdated?.Invoke(_score);
         OnCurrencyUpdated?.Invoke(_currency);
-        OnCreatureRemoved?.Invoke();
     }
 
     public void HandleCreatureEliminated(Creature creature)
