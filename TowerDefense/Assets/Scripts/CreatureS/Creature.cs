@@ -1,19 +1,21 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
+
 namespace CreatureS
 {
     public class Creature : LivingEntity
     {
         private NavMeshAgent _navMeshAgent;
-        public CreatureSO Data { get; set; }
+        public CreatureSO Data { get; private set; }
         private int _currentHealth;
         public Action<Creature> OnCreatureEliminated;
         public Action<Creature> OnCreatureReachedEnd;
 
-        private void Awake()
+        public void Initialize(CreatureSO creatureData)
         {
             _navMeshAgent = GetComponent<NavMeshAgent>();
+            Data = creatureData;
             _navMeshAgent.speed = Data.speed;
             _currentHealth = Data.health;
         }

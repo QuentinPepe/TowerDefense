@@ -61,11 +61,10 @@ namespace CreatureS
             await loadOperation.Task;
             foreach (CreatureSO creatureData in loadOperation.Result)
             {
-                ObjectPool<Creature> creaturePool = new ObjectPool<Creature>(() =>
-                    {
+                ObjectPool<Creature> creaturePool = new ObjectPool<Creature>(() => {
                         GameObject creatureObject = Instantiate(creatureData.prefab);
                         Creature creature = creatureObject.GetComponent<Creature>();
-                        creature.Data = creatureData;
+                        creature.Initialize(creatureData);
                         return creature;
                     }, (creature) => creature.gameObject.SetActive(true),
                     (creature) => creature.gameObject.SetActive(false));
