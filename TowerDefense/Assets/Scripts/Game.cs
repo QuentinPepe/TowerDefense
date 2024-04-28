@@ -1,9 +1,7 @@
 using System;
 using System.Collections;
-using System.Linq;
 using CreatureS;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Waves;
 
 public class Game : MonoBehaviour
@@ -13,9 +11,9 @@ public class Game : MonoBehaviour
     [SerializeField] private CreatureManager creatureManager;
     [SerializeField] private PlayerEntity playerEntity;
 
+    private int _currency;
     private int _score;
     private int _multiplier;
-    private int _currency;
     private IEnumerator _creatureSpawnCoroutine;
 
     public Action<int> OnCreatureRemoved;
@@ -25,6 +23,29 @@ public class Game : MonoBehaviour
     public Action<GameInfo> OnGameOver;
     public static Game Instance { get; private set; }
 
+    public int Currency {
+        get => _currency;
+        set {
+            _currency = value;
+            OnCurrencyUpdated?.Invoke(_currency);
+        }
+    }
+    private int Multiplier {
+        get => _multiplier;
+        set {
+            _multiplier = value;
+            OnMultiplierUpdated?.Invoke(Multiplier);
+        }
+    }
+    private int Score {
+        get => _score;
+        set {
+            _score = value;
+            OnScoreUpdated?.Invoke(_score);
+        }
+    }
+
+
     private void Awake()
     {
         Instance = this;
@@ -32,10 +53,9 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
-        _score = 0;
-        _multiplier = 0;
-        _currency = 0;
-        UpdateGame();
+        Score = 0;
+        Multiplier = 0;
+        Currency = 500;
     }
 
     public void StartGame()
@@ -43,38 +63,29 @@ public class Game : MonoBehaviour
         //TODO
     }
 
-    private void UpdateGame()
-    {
-        OnMultiplierUpdated?.Invoke(_multiplier);
-        OnScoreUpdated?.Invoke(_score);
-        OnCurrencyUpdated?.Invoke(_currency);
-    }
-
     public void HandleCreatureEliminated(Creature creature)
     {
         creatureManager.RemoveCreature(creature);
-        if (_multiplier < 0) _multiplier = 1;
-        else _multiplier++;
-        _score += creature.Data.score * _multiplier;
-        _currency += creature.Data.reward;
-        UpdateGame();
+        if (Multiplier < 0) Multiplier = 1;
+        else Multiplier++;
+        Score += creature.Data.score * Multiplier;
+        Currency += creature.Data.reward;
     }
 
     public void HandleCreatureReachedEnd(Creature creature)
     {
-        if (_multiplier > 0) _multiplier = -1;
-        else _multiplier--;
-        _score += creature.Data.score * _multiplier;
+        if (Multiplier > 0) Multiplier = -1;
+        else Multiplier--;
+        Score += creature.Data.score * Multiplier;
         playerEntity.TakeDamage(creature.Data.damage);
         creatureManager.RemoveCreature(creature);
-        UpdateGame();
     }
 
     public void CheckGameOver(int _currentHealth)
     {
         if (_currentHealth <= 0)
         {
-            OnGameOver?.Invoke(new GameInfo(_score, waveManager.CurrentWave.WaveNumber, _currency,
+            OnGameOver?.Invoke(new GameInfo(Score, waveManager.CurrentWave.WaveNumber, Currency,
                 creatureManager.CurrentCreatureNumber));
         }
     }

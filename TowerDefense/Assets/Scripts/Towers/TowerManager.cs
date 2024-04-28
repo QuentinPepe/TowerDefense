@@ -33,6 +33,7 @@ namespace Towers
             newTower.Initialize(towerData, position);
             _towers.Add(position, newTower);
             OnTowerPlaced?.Invoke(newTower);
+            Game.Instance.Currency -= towerData.cost;
             return true;
         }
 
@@ -44,6 +45,7 @@ namespace Towers
                 return;
             }
 
+            Game.Instance.Currency -= tower.Data.cost;
             tower.Upgrade();
             OnTowerUpgraded?.Invoke(tower);
         }
@@ -61,10 +63,9 @@ namespace Towers
             Destroy(tower.gameObject);
         }
 
-        private bool CanAfford(int cost)
+        private static bool CanAfford(int cost)
         {
-            // TODO : player's currency check
-            return true;
+            return cost <= Game.Instance.Currency;
         }
         public bool IsCellOccupied(CellPosition position)
         {
