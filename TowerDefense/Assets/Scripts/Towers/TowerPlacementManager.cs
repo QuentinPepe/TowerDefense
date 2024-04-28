@@ -32,10 +32,17 @@ namespace Towers
             Game.Instance.GetWaveManager().OnWaveStarted -= HandleWaveStarted;
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Clear();
+            }
+        }
+
         private void HandleWaveStarted(WaveSO _)
         {
-            if (!_ghostTowerInstance.IsUnityNull()) Destroy(_ghostTowerInstance);
-            _selectedTower = null;
+            Clear();
         }
 
         private void HandleTowerSelected(TowerSO tower)
@@ -80,7 +87,12 @@ namespace Towers
         {
             if (!CanPlaceTower(position)) return;
             if (!PlaceTower(position)) return;
-            Destroy(_ghostTowerInstance);
+            Clear();
+        }
+        private void Clear()
+        {
+            if (!_ghostTowerInstance.IsUnityNull())
+                Destroy(_ghostTowerInstance);
             _selectedTower = null;
         }
 

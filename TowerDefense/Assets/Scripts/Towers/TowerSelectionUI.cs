@@ -18,7 +18,7 @@ namespace Towers
         private void Awake()
         {
             InitializeButtons();
-            UpdateCostTexts();
+            UpdateUI();
         }
 
         private void InitializeButtons()
@@ -36,9 +36,9 @@ namespace Towers
             }
         }
 
-        private void UpdateCostTexts()
+        private void UpdateUI()
         {
-            if (towerCostTexts.Count != towerData.Count)
+            if (towerCostTexts.Count != towerData.Count || towerData.Count != towerButtons.Count)
             {
                 Debug.LogError("Mismatch between tower cost texts and tower data counts.");
                 return;
@@ -47,6 +47,7 @@ namespace Towers
             for (int i = 0; i < towerCostTexts.Count; i++)
             {
                 towerCostTexts[i].text = towerData[i].cost + " $";
+                towerButtons[i].image.sprite = towerData[i].icon;
             }
         }
 
