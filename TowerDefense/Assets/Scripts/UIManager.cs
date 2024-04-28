@@ -6,24 +6,21 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI scoreText;
+    public TextMeshProUGUI ScoreText { get; private set; }
     [SerializeField] private TextMeshProUGUI multiplierText;
-    [SerializeField] private TextMeshProUGUI currencyText;
-    [SerializeField] private TextMeshProUGUI waveText;
-    [SerializeField] private TextMeshProUGUI remainingCreatureText;
-    private int _maxCreature;
+    public TextMeshProUGUI CurrencyText { get; private set; }
+    public TextMeshProUGUI WaveText { get; private set; }
+    public TextMeshProUGUI RemainingCreatureText { get; private set; }
 
     private void Start()
     {
-        Game.Instance.OnCurrencyUpdated += (currency) => UpdateText(currencyText, currency);
-        Game.Instance.OnScoreUpdated += (score) => {
-            UpdateText(scoreText, score);
-            UpdateText(remainingCreatureText, _maxCreature);
+        Game.Instance.OnCurrencyUpdated += (currency) => UpdateText(CurrencyText, currency);
+        Game.Instance.OnScoreUpdated += (score) =>
+        {
+            UpdateText(ScoreText, score);
         };
 
-        Game.Instance.OnCreatureRemoved += () => {
-            _maxCreature--;
-        };
+        Game.Instance.OnCreatureRemoved += (currentCreatureNumber) => { UpdateText(RemainingCreatureText, currentCreatureNumber); };
 
         Game.Instance.OnMultiplierUpdated += (multiplier) => UpdateText(multiplierText, multiplier);
     }
@@ -35,12 +32,11 @@ public class UIManager : MonoBehaviour
 
     public void SetMaxCreature(int maxCreature)
     {
-        _maxCreature = maxCreature;
-        UpdateText(remainingCreatureText, _maxCreature);
+        UpdateText(RemainingCreatureText, maxCreature);
     }
 
     public void UpdateWaveText(int value)
     {
-        UpdateText(waveText, value, "Wave : ");
+        UpdateText(WaveText, value, "Wave : ");
     }
 }

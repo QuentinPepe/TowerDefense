@@ -4,14 +4,12 @@ using Waves;
 public class DefensePhase : IPhase
 {
     private WaveManager _waveManager;
-    private int _remainingCreatures;
 
     public void OnEnter(WaveManager waveManager)
     {
         _waveManager = waveManager;
         _waveManager.DefensePhaseUI.SetActive(true);
 
-        _remainingCreatures = _waveManager.CurrentWave.Creatures.Count();
 
         Game.Instance.OnCreatureRemoved += HandleCreatureEliminated;
 
@@ -21,10 +19,9 @@ public class DefensePhase : IPhase
     {
     }
 
-    private void HandleCreatureEliminated()
+    private void HandleCreatureEliminated(int remainingCreatures)
     {
-        _remainingCreatures--;
-        if (_remainingCreatures <= 0)
+        if (remainingCreatures <= 0)
         {
             _waveManager.FinishPhase();
         }

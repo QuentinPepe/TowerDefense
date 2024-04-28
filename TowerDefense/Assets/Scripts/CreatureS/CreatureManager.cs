@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Pool;
@@ -16,6 +17,7 @@ namespace CreatureS
         private Dictionary<CreatureSO, ObjectPool<Creature>> _poolDictionary;
         private ObjectPool<Creature> _creaturePool;
         public Action<Creature> OnCreatureSpawned;
+        public int CurrentCreatureNumber { get; private set; }
 
         private void Start()
         {
@@ -34,7 +36,8 @@ namespace CreatureS
 
         public void RemoveCreature(Creature creature)
         {
-            Game.Instance.OnCreatureRemoved?.Invoke();
+            CurrentCreatureNumber--;
+            Game.Instance.OnCreatureRemoved?.Invoke(CurrentCreatureNumber);
             _creaturePool = _poolDictionary[creature.Data];
             creature.gameObject.SetActive(false);
             _creaturePool.Release(creature);
@@ -42,6 +45,7 @@ namespace CreatureS
 
         public IEnumerator SpawnCoroutine(WaveSO currentWaveData)
         {
+            CurrentCreatureNumber = currentWaveData.Creatures.Count();
             foreach (CreatureSO creatureData in currentWaveData.Creatures)
             {
                 SpawnCreature(creatureData, spawnPoint, targetPoint);
@@ -49,11 +53,12 @@ namespace CreatureS
             }
         }
 
-        private void CreatePoolDictionary()
+        private async void CreatePoolDictionary()
         {
             _poolDictionary = new Dictionary<CreatureSO, ObjectPool<Creature>>();
             AsyncOperationHandle<IList<CreatureSO>> loadOperation =
                 Addressables.LoadAssetAsync<IList<CreatureSO>>("CreatureData");
+            await loadOperation.Task;
             foreach (CreatureSO creatureData in loadOperation.Result)
             {
                 ObjectPool<Creature> creaturePool = new ObjectPool<Creature>(() => {

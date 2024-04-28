@@ -16,7 +16,7 @@ public class Game : MonoBehaviour
     private int _currency;
     private IEnumerator _creatureSpawnCoroutine;
 
-    public Action OnCreatureRemoved;
+    public Action<int> OnCreatureRemoved;
     public Action<int> OnScoreUpdated;
     public Action<int> OnMultiplierUpdated;
     public Action<int> OnCurrencyUpdated;
