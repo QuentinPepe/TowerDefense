@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Grid;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Pool;
@@ -70,6 +71,15 @@ namespace CreatureS
                     (creature) => creature.gameObject.SetActive(false));
                 _poolDictionary.Add(creatureData, creaturePool);
             }
+        }
+        public void SetStartPosition(CellPosition cellPosition)
+        {
+            spawnPoint = new Vector3(cellPosition.X + 0.5f, 0, cellPosition.Z + 0.5f);
+        }
+        
+        public void SetEndPosition(CellPosition cellPosition)
+        {
+            targetPoint = new Vector3(cellPosition.X + 0.5f, 0, cellPosition.Z + 0.5f);
         }
     }
 }

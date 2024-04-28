@@ -48,7 +48,7 @@ namespace Grid
 
         public bool IsCellWalkable(CellPosition cellPosition)
         {
-            return gridState.GetState(cellPosition) == 1;
+            return gridState.GetState(cellPosition) >= 1;
         }
 
         public GameObject GetCell(CellPosition position)

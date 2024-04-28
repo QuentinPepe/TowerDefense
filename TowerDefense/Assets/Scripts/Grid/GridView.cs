@@ -20,7 +20,7 @@ namespace Grid
         [SerializeField] private int width = 11;
         [SerializeField] private int height = 11;
         [SerializeField] private float cellSize = 1f;
-
+        
         private void Awake()
         {
             gridState.InitializeMatrix(width, height);
