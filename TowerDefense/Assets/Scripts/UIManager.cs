@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using Waves;
 
 public class UIManager : MonoBehaviour
 {
@@ -15,14 +17,15 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         Game.Instance.OnCurrencyUpdated += (currency) => UpdateText(CurrencyText, currency);
-        Game.Instance.OnScoreUpdated += (score) =>
+        Game.Instance.OnScoreUpdated += (score) => { UpdateText(ScoreText, score); };
+
+        Game.Instance.OnCreatureRemoved += (currentCreatureNumber) =>
         {
-            UpdateText(ScoreText, score);
+            UpdateText(RemainingCreatureText, currentCreatureNumber);
         };
 
-        Game.Instance.OnCreatureRemoved += (currentCreatureNumber) => { UpdateText(RemainingCreatureText, currentCreatureNumber); };
-
         Game.Instance.OnMultiplierUpdated += (multiplier) => UpdateText(multiplierText, multiplier);
+        Game.Instance.GetWaveManager().OnWaveStarted += HandleNewWave;
     }
 
     private void UpdateText(TextMeshProUGUI text, int value, string message = "")
@@ -30,13 +33,15 @@ public class UIManager : MonoBehaviour
         text.text = message + value;
     }
 
-    public void SetMaxCreature(int maxCreature)
-    {
-        UpdateText(RemainingCreatureText, maxCreature);
-    }
 
     public void UpdateWaveText(int value)
     {
         UpdateText(WaveText, value, "Wave : ");
+    }
+
+    private void HandleNewWave(WaveSO currentWave)
+    {
+        UpdateText(RemainingCreatureText, currentWave.Creatures.Count());
+        UpdateWaveText(currentWave.WaveNumber);
     }
 }

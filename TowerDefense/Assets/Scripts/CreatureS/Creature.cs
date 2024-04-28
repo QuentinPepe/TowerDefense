@@ -6,7 +6,7 @@ namespace CreatureS
     public class Creature : LivingEntity
     {
         private NavMeshAgent _navMeshAgent;
-        public CreatureSO Data { get; private set; }
+        public CreatureSO Data { get; set; }
         private int _currentHealth;
         public Action<Creature> OnCreatureEliminated;
         public Action<Creature> OnCreatureReachedEnd;

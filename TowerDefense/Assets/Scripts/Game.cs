@@ -36,13 +36,6 @@ public class Game : MonoBehaviour
         _multiplier = 0;
         _currency = 0;
         UpdateGame();
-
-        if (!uiManager) return;
-        waveManager.OnWaveStarted += () => {
-            WaveSO currentWave = waveManager.CurrentWave;
-            uiManager.SetMaxCreature(currentWave.Creatures.Count());
-            uiManager.UpdateWaveText(currentWave.WaveNumber);
-        };
     }
 
     public void StartGame()
@@ -90,5 +83,10 @@ public class Game : MonoBehaviour
     {
         _creatureSpawnCoroutine = creatureManager.SpawnCoroutine(currentWaveData);
         StartCoroutine(_creatureSpawnCoroutine);
+    }
+
+    public WaveManager GetWaveManager()
+    {
+        return waveManager;
     }
 }

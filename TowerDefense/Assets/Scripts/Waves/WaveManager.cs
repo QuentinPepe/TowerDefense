@@ -8,7 +8,7 @@ namespace Waves
 {
     public class WaveManager : MonoBehaviour
     {
-        public Action OnWaveStarted;
+        public Action<WaveSO> OnWaveStarted;
         public Action OnWaveEnded;
 
         private List<WaveSO> _waves;
@@ -70,7 +70,7 @@ namespace Waves
             CurrentWave = _waves[_currentWaveIndex];
             _currentPhase = new DefensePhase();
             _currentPhase.OnEnter(this);
-            OnWaveStarted?.Invoke();
+            OnWaveStarted?.Invoke(CurrentWave);
         }
 
         private void Update()
