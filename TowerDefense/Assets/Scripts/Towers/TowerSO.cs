@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Towers
 {
@@ -12,5 +13,6 @@ namespace Towers
         public float fireRate;
         public float range;
         public TowerSO upgrade; // Reference to an upgraded version of this tower
+        public Sprite icon;
     }
 }
