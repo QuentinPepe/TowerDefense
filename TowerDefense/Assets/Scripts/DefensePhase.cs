@@ -1,7 +1,7 @@
 using System.Linq;
 using Waves;
 
-public class CombatPhase : IPhase
+public class DefensePhase : IPhase
 {
     private WaveManager _waveManager;
     private int _remainingCreatures;
@@ -28,7 +28,7 @@ public class CombatPhase : IPhase
         _remainingCreatures--;
         if (_remainingCreatures <= 0)
         {
-            OnFinished();
+            _waveManager.FinishPhase();
         }
     }
 
@@ -37,5 +37,6 @@ public class CombatPhase : IPhase
         _waveManager.DefensePhaseUI.SetActive(false);
         Game.Instance.OnCreatureRemoved -= HandleCreatureEliminated;
         _waveManager.AdvanceToNextWave();
+        _waveManager.OnWaveEnded?.Invoke();
     }
 }

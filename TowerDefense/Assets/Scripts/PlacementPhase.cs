@@ -14,7 +14,7 @@ public class PlacementPhase : IPhase
     {
         if (Input.GetKeyDown(KeyCode.Space)) // En attendant un bouton UI
         {
-            OnFinished();
+            _waveManager.FinishPhase();
         }
     }
 
