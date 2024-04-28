@@ -10,6 +10,10 @@ namespace Grid
         public GridModel GridModel { get; private set; }
         private GameObject[,] _cells;
 
+        [SerializeField] private GameObject floorPrefab;
+        [SerializeField] private GameObject walkablePrefab;
+
+
         [SerializeField] private NavMeshSurface navMeshSurface;
         [SerializeField] private GridController gridController;
         [SerializeField] private GridState gridState;
@@ -62,7 +66,11 @@ namespace Grid
             {
                 for (int y = 0; y < GridModel.Height; y++)
                 {
-                    GameObject cell = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    GameObject cell = Instantiate(
+                        gridController.IsCellWalkable(new CellPosition(x, y)) ? walkablePrefab : floorPrefab,
+                        GridModel.GetWorldPosition(x, y) + new Vector3(0.5f, 0, 0.5f) * GridModel.CellSize,
+                        Quaternion.identity, transform);
+
                     cell.transform.position = GridModel.GetWorldPosition(x, y) + new Vector3(0.5f, 0, 0.5f) * GridModel.CellSize;
                     cell.transform.parent = transform;
                     cell.name = $"Cell_{x}_{y}";
@@ -74,13 +82,6 @@ namespace Grid
                     CellPosition cellPosition = new CellPosition(x, y);
                     navMeshModifier.area = gridController.IsCellWalkable(cellPosition) ? 0 : 1;
                     navMeshModifier.ignoreFromBuild = !gridController.IsCellWalkable(cellPosition);
-
-                    Renderer renderer = cell.GetComponent<Renderer>();
-                    Material tempMaterial = new Material(renderer.sharedMaterial)
-                    {
-                        color = gridController.IsCellWalkable(cellPosition) ? Color.gray : Color.white
-                    };
-                    renderer.sharedMaterial = tempMaterial;
 
                     _cells[x, y] = cell;
                 }

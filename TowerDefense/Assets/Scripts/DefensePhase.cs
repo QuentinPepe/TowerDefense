@@ -15,8 +15,6 @@ public class DefensePhase : IPhase
 
         Game.Instance.OnCreatureRemoved += HandleCreatureEliminated;
 
-        // TODO On Defeat
-
         Game.Instance.StartSpawnCreature(waveManager.CurrentWave);
     }
     public void Update()
