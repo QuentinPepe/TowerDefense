@@ -8,8 +8,8 @@ namespace Waves
 {
     public class WaveManager : MonoBehaviour
     {
-        public event Action OnWaveStarted;
-        public event Action OnWaveEnded;
+        public Action OnWaveStarted;
+        public Action OnWaveEnded;
 
         private List<WaveSO> _waves;
         private int _currentWaveIndex = 0;
@@ -68,7 +68,7 @@ namespace Waves
         public void SwitchToDefensePhase()
         {
             CurrentWave = _waves[_currentWaveIndex];
-            _currentPhase = new CombatPhase();
+            _currentPhase = new DefensePhase();
             _currentPhase.OnEnter(this);
             OnWaveStarted?.Invoke();
         }
@@ -76,6 +76,10 @@ namespace Waves
         private void Update()
         {
             _currentPhase.Update();
+        }
+        public void FinishPhase()
+        {
+            _currentPhase.OnFinished();
         }
     }
 }
