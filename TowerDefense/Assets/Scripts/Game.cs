@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using CreatureS;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Waves;
 
 public class Game : MonoBehaviour
@@ -10,6 +11,7 @@ public class Game : MonoBehaviour
     [SerializeField] private WaveManager waveManager;
     [SerializeField] private UIManager uiManager;
     [SerializeField] private CreatureManager creatureManager;
+    [SerializeField] private PlayerEntity playerEntity;
 
     private int _score;
     private int _multiplier;
@@ -20,6 +22,7 @@ public class Game : MonoBehaviour
     public Action<int> OnScoreUpdated;
     public Action<int> OnMultiplierUpdated;
     public Action<int> OnCurrencyUpdated;
+    public Action<GameInfo> OnGameOver;
     public static Game Instance { get; private set; }
 
     private void Awake()
@@ -33,7 +36,8 @@ public class Game : MonoBehaviour
         _multiplier = 0;
         _currency = 0;
         UpdateGame();
-        waveManager.OnWaveStarted += () => {
+        waveManager.OnWaveStarted += () =>
+        {
             WaveSO currentWave = waveManager.CurrentWave;
             uiManager.SetMaxCreature(currentWave.Creatures.Count());
             uiManager.UpdateWaveText(currentWave.WaveNumber);
@@ -64,11 +68,21 @@ public class Game : MonoBehaviour
 
     public void HandleCreatureReachedEnd(Creature creature)
     {
-        creatureManager.RemoveCreature(creature);
         if (_multiplier > 0) _multiplier = -1;
         else _multiplier--;
         _score += creature.Data.score * _multiplier;
+        playerEntity.TakeDamage(creature.Data.damage);
+        creatureManager.RemoveCreature(creature);
         UpdateGame();
+    }
+
+    public void CheckGameOver(int _currentHealth)
+    {
+        if (_currentHealth <= 0)
+        {
+            OnGameOver?.Invoke(new GameInfo(_score, waveManager.CurrentWave.WaveNumber, _currency,
+                creatureManager.CurrentCreatureNumber));
+        }
     }
 
     public void StartSpawnCreature(WaveSO currentWaveData)

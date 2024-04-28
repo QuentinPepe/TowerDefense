@@ -10,4 +10,5 @@ public class CreatureSO : ScriptableObject
     public float speed;
     public int score;
     public int reward;
+    public int damage;
 }
