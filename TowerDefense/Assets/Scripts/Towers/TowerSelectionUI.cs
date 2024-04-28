@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,7 @@ namespace Towers
     {
         [SerializeField] private List<Button> towerButtons;
         [SerializeField] private List<TowerSO> towerData;
+        [SerializeField] private List<TextMeshProUGUI> towerCostTexts;
         private TowerSO _selectedTower;
 
         public event Action<TowerSO> OnTowerSelected;
@@ -16,6 +18,7 @@ namespace Towers
         private void Awake()
         {
             InitializeButtons();
+            UpdateCostTexts();
         }
 
         private void InitializeButtons()
@@ -30,6 +33,20 @@ namespace Towers
             {
                 int index = i;
                 towerButtons[i].onClick.AddListener(() => SelectTower(index));
+            }
+        }
+
+        private void UpdateCostTexts()
+        {
+            if (towerCostTexts.Count != towerData.Count)
+            {
+                Debug.LogError("Mismatch between tower cost texts and tower data counts.");
+                return;
+            }
+
+            for (int i = 0; i < towerCostTexts.Count; i++)
+            {
+                towerCostTexts[i].text = towerData[i].cost + " $";
             }
         }
 

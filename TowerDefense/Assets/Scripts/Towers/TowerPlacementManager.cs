@@ -1,6 +1,7 @@
 ﻿using Grid;
 using Unity.VisualScripting;
 using UnityEngine;
+using Waves;
 
 namespace Towers
 {
@@ -19,6 +20,7 @@ namespace Towers
             gridController.OnCellClick += HandleCellPlacement;
             gridController.OnHoverEnter += ShowGhostTower;
             gridController.OnHoverLeave += HideGhostTower;
+            Game.Instance.GetWaveManager().OnWaveStarted += HandleWaveStarted;
         }
 
         private void OnDisable()
@@ -27,6 +29,13 @@ namespace Towers
             gridController.OnCellClick -= HandleCellPlacement;
             gridController.OnHoverEnter -= ShowGhostTower;
             gridController.OnHoverLeave -= HideGhostTower;
+            Game.Instance.GetWaveManager().OnWaveStarted -= HandleWaveStarted;
+        }
+
+        private void HandleWaveStarted(WaveSO _)
+        {
+            if (!_ghostTowerInstance.IsUnityNull()) Destroy(_ghostTowerInstance);
+            _selectedTower = null;
         }
 
         private void HandleTowerSelected(TowerSO tower)

@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 namespace Grid
@@ -56,10 +57,20 @@ namespace Grid
                     {
                         CellPosition position = new CellPosition(x, z);
                         int currentState = _gridState.GetState(position);
-                        GUI.color = currentState == 1 ? Color.white : Color.black;
+
+                        Color color = currentState switch
+                        {
+                            0 => Color.white,
+                            1 => Color.black,
+                            2 => Color.green,
+                            3 => Color.red,
+                            _ => throw new System.ArgumentOutOfRangeException()
+                        };
+
+                        GUI.color = color;
                         if (GUILayout.Button("", GUILayout.Width(_buttonSize.x), GUILayout.Height(_buttonSize.y)))
                         {
-                            _gridState.SetWalkable(position, currentState == 0);
+                            _gridState.IncrementState(position);
                             EditorUtility.SetDirty(_gridState);
                         }
                     }

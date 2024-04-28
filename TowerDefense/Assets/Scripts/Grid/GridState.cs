@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using CreatureS;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -10,6 +12,7 @@ namespace Grid
         [SerializeField] private int height = 11;
         [SerializeField] private int[] stateMatrix;
         [SerializeField] private GridView gridView;
+        [SerializeField] private CreatureManager creatureManager;
 
         public int Width => width;
         public int Height => height;
@@ -50,11 +53,30 @@ namespace Grid
                 throw new ArgumentOutOfRangeException("x and y must be within the grid boundaries.");
             stateMatrix[z * width + x] = state;
             gridView.UpdateGrid();
+
+            if (state == 2)
+            {
+                creatureManager.SetStartPosition(cellPosition);
+            }
+            else if (state == 3)
+            {
+                creatureManager.SetEndPosition(cellPosition);
+            }
         }
 
-        public void SetWalkable(CellPosition cellPosition, bool walkable)
+        public void IncrementState(CellPosition cellPosition)
         {
-            SetState(cellPosition, walkable ? 1 : 0);
+            int currentState = GetState(cellPosition);
+            int newState = (currentState + 1) % 4;
+
+            if (newState == 2 && stateMatrix.Any(t => t == 2))
+                newState = 3;
+
+            if (newState == 3 && stateMatrix.Any(t => t == 3))
+                newState = 0;
+
+            SetState(cellPosition, newState);
         }
     }
+
 }

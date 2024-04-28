@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerName: Tower1
   prefab: {fileID: 1204101410028683586, guid: 9e6c2a20df17d164abc52a7e7eba58e7, type: 3}
-  cost: 20
+  cost: 150
   damage: 20
   fireRate: 1
   range: 20

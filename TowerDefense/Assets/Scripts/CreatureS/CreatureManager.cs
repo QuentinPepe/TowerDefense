@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Grid;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Pool;
@@ -61,16 +62,24 @@ namespace CreatureS
             await loadOperation.Task;
             foreach (CreatureSO creatureData in loadOperation.Result)
             {
-                ObjectPool<Creature> creaturePool = new ObjectPool<Creature>(() =>
-                    {
+                ObjectPool<Creature> creaturePool = new ObjectPool<Creature>(() => {
                         GameObject creatureObject = Instantiate(creatureData.prefab);
                         Creature creature = creatureObject.GetComponent<Creature>();
-                        creature.Data = creatureData;
+                        creature.Initialize(creatureData);
                         return creature;
                     }, (creature) => creature.gameObject.SetActive(true),
                     (creature) => creature.gameObject.SetActive(false));
                 _poolDictionary.Add(creatureData, creaturePool);
             }
+        }
+        public void SetStartPosition(CellPosition cellPosition)
+        {
+            spawnPoint = new Vector3(cellPosition.X + 0.5f, 0, cellPosition.Z + 0.5f);
+        }
+        
+        public void SetEndPosition(CellPosition cellPosition)
+        {
+            targetPoint = new Vector3(cellPosition.X + 0.5f, 0, cellPosition.Z + 0.5f);
         }
     }
 }
