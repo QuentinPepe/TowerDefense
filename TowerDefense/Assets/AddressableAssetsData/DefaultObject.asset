@@ -9,11 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca0690298b204ec45a740499ae761c5e, type: 3}
-  m_Name: Creature1
+  m_Script: {fileID: 11500000, guid: 3a189bb168d8d90478a09ea08c2f3d72, type: 3}
+  m_Name: DefaultObject
   m_EditorClassIdentifier: 
-  prefab: {fileID: 2299141714564060189, guid: 2cfdf4f7f2190a441ab3b2af6ed954ba, type: 3}
-  health: 100
-  speed: 1
-  score: 10
-  reward: 10
+  m_AddressableAssetSettingsGuid: a05175a747f79ad4ca31a5057031b51b
