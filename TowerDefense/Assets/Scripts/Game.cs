@@ -36,8 +36,9 @@ public class Game : MonoBehaviour
         _multiplier = 0;
         _currency = 0;
         UpdateGame();
-        waveManager.OnWaveStarted += () =>
-        {
+
+        if (!uiManager) return;
+        waveManager.OnWaveStarted += () => {
             WaveSO currentWave = waveManager.CurrentWave;
             uiManager.SetMaxCreature(currentWave.Creatures.Count());
             uiManager.UpdateWaveText(currentWave.WaveNumber);
