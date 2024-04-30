@@ -40,5 +40,9 @@ namespace CreatureS
         {
             _navMeshAgent.destination = target;
         }
+        public void TeleportTo(Vector3 position)
+        {
+            _navMeshAgent.Warp(position);
+        }
     }
 }

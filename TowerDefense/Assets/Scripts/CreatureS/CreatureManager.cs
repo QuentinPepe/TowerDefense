@@ -31,7 +31,7 @@ namespace CreatureS
             Creature creature = _creaturePool.Get();
             creature.gameObject.SetActive(true);
             OnCreatureSpawned?.Invoke(creature);
-            creature.transform.position = spawnPosition;
+            creature.TeleportTo(spawnPosition);
             creature.MoveTo(target);
         }
 
@@ -76,7 +76,7 @@ namespace CreatureS
         {
             spawnPoint = new Vector3(cellPosition.X + 0.5f, 0, cellPosition.Z + 0.5f);
         }
-        
+
         public void SetEndPosition(CellPosition cellPosition)
         {
             targetPoint = new Vector3(cellPosition.X + 0.5f, 0, cellPosition.Z + 0.5f);
