@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using UnityEngine.Serialization;
+using Utils;
 
 namespace Grid
 {
@@ -34,6 +35,8 @@ namespace Grid
             if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer)) return;
             gridView.GridModel.GetXY(hit.point, out int x, out int y);
             CellPosition position = new CellPosition(x, y);
+
+            if (UIUtils.IsPointerOverUIObject()) return;
 
             if (Input.GetMouseButtonDown(0))
                 OnCellClick?.Invoke(position);
