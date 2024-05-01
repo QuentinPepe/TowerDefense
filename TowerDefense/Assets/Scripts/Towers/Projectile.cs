@@ -16,7 +16,6 @@ public class Projectile : MonoBehaviour
 
     private void Update()
     {
-        if (transform.position.y < 0) Destroy(gameObject);
         if (!_target) return;
         _rb.velocity = speed * (transform.position - _target.transform.position);
     }
@@ -31,11 +30,16 @@ public class Projectile : MonoBehaviour
         _damage = damage;
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.TryGetComponent(out Creature creature))
         {
             creature.TakeDamage(_damage);
+            Destroy(gameObject);
+        }
+
+        if (other.gameObject.layer == LayerMask.GetMask("Ground"))
+        {
             Destroy(gameObject);
         }
     }
