@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Grid;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -20,12 +19,9 @@ namespace Waves
 
         [SerializeField] private GameObject placementPhaseUI;
         [SerializeField] private GameObject defensePhaseUI;
-        [SerializeField] private GridController gridController;
 
         public GameObject PlacementPhaseUI => placementPhaseUI;
         public GameObject DefensePhaseUI => defensePhaseUI;
-        public GridController GridController => gridController;
-
 
         private void Start()
         {

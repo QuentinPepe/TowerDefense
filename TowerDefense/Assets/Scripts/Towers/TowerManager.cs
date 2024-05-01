@@ -14,9 +14,31 @@ namespace Towers
         public event Action<Tower> OnTowerUpgraded;
         public event Action<Tower> OnTowerDestroy;
 
+        [SerializeField] private GridController gridController;
+
         private void Awake()
         {
             _towers = new Dictionary<CellPosition, Tower>();
+
+            gridController.OnHoverEnter += HandleHoverEnter;
+            gridController.OnHoverLeave += HandleHoverLeave;
+        }
+        private void HandleHoverLeave(CellPosition obj)
+        {
+            Tower tower = GetTower(obj);
+            if (tower != null)
+            {
+                tower.HideRadius();
+            }
+        }
+
+        private void HandleHoverEnter(CellPosition obj)
+        {
+            Tower tower = GetTower(obj);
+            if (tower != null)
+            {
+                tower.DrawRadius(tower.Data.range);
+            }
         }
 
         public bool PlaceTower(TowerSO towerData, CellPosition position)

@@ -64,7 +64,7 @@ namespace Towers
             Vector3 worldPosition = new Vector3(position.X + 0.5f, 0, position.Z + 0.5f);
             _ghostTowerInstance.transform.position = worldPosition;
             _ghostTowerInstance.SetActive(true);
-            UpdateGroundColor(position);
+            _ghostTowerInstance.GetComponent<Tower>().DrawRadius(_selectedTower.range);
         }
 
         private void HideGhostTower(CellPosition position)
@@ -73,10 +73,6 @@ namespace Towers
             _ghostTowerInstance.SetActive(false);
         }
 
-        private void UpdateGroundColor(CellPosition position)
-        {
-            // TODO: Implement this method
-        }
 
         private void SetGhostTowerAppearance()
         {

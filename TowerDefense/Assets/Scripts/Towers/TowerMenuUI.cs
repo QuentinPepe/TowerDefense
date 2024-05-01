@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using Grid;
 using TMPro;
@@ -30,9 +31,18 @@ namespace Towers
 
         private void Start()
         {
-            gridController.OnCellClick += HandleCellClick;
             closeButton.onClick.AddListener(Hide);
             Game.Instance.GetWaveManager().OnWaveStarted += (_) => Hide();
+        }
+
+        private void OnEnable()
+        {
+            gridController.OnCellClick += HandleCellClick;
+        }
+
+        private void OnDisable()
+        {
+            gridController.OnCellClick -= HandleCellClick;
         }
 
         private void OnDestroy()

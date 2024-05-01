@@ -11,12 +11,43 @@ namespace Towers
 
         private float _lastShotTime;
         private float _placementTime;
+        private LineRenderer _radiusLineRenderer;
+
         [SerializeField] private Transform weapon;
+        private const float LineRenderYOffset = 0.1f;
+
+        private void Start()
+        {
+            _radiusLineRenderer = gameObject.AddComponent<LineRenderer>();
+            _radiusLineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+            _radiusLineRenderer.startWidth = 0.1f;
+            _radiusLineRenderer.endWidth = 0.1f;
+            _radiusLineRenderer.startColor = Color.red;
+            _radiusLineRenderer.endColor = Color.red;
+        }
 
         private void Update()
         {
             if (Data.IsUnityNull()) return;
             Shoot();
+        }
+
+        public void DrawRadius(float range)
+        {
+            int numPoints = 50;
+            Vector3[] points = new Vector3[numPoints + 1];
+            float angle = 0f;
+            float angleStep = 2f * Mathf.PI / numPoints;
+
+            for (int i = 0; i < numPoints; i++)
+            {
+                points[i] = transform.position + new Vector3(Mathf.Cos(angle), LineRenderYOffset, Mathf.Sin(angle)) * range;
+                angle += angleStep;
+            }
+            points[numPoints] = points[0];
+
+            _radiusLineRenderer.positionCount = numPoints + 1;
+            _radiusLineRenderer.SetPositions(points);
         }
 
         public void Initialize(TowerSO towerData, CellPosition cellPosition)
@@ -25,6 +56,7 @@ namespace Towers
             CellPosition = cellPosition;
             _lastShotTime = -Data.fireRate;
             _placementTime = Time.time;
+
         }
 
         private void Shoot()
@@ -60,6 +92,10 @@ namespace Towers
         public float GetTimeSincePlacement()
         {
             return Time.time - _placementTime;
+        }
+        public void HideRadius()
+        {
+            _radiusLineRenderer.positionCount = 0;
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Grid
             _camera = Camera.main;
         }
 
-        public void UpdateEvent()
+        public void Update()
         {
             HandleMouse();
         }
