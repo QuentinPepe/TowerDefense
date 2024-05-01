@@ -32,7 +32,7 @@ namespace Waves
         private async void LoadWavesFromAddressables()
         {
             _waves = new List<WaveSO>();
-            AsyncOperationHandle<IList<WaveSO>> loadOperation = Addressables.LoadAssetAsync<IList<WaveSO>>("WaveData");
+            AsyncOperationHandle<IList<WaveSO>> loadOperation = Addressables.LoadAssetsAsync<WaveSO>("WaveData", null);
             await loadOperation.Task;
 
             if (loadOperation.Status == AsyncOperationStatus.Succeeded)
@@ -44,6 +44,7 @@ namespace Waves
             {
                 Debug.LogError("Failed to load wave data from Addressables.");
             }
+
         }
 
         public void AdvanceToNextWave()

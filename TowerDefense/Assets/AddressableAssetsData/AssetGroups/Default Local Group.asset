@@ -17,17 +17,23 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 438f58647043adf4d829013c9fb165c0
   m_SerializeEntries:
-  - m_GUID: 6e930f5c4cf778640a252778e63d872e
-    m_Address: Assets/Waves/Wave1.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - WaveData
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6b8751d984f3fa64393c731edcadeff7
     m_Address: Assets/Creatures/Creature1/Creature1.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - CreatureData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 494c3e5c22867234cb9bea77acccc470
+    m_Address: Assets/Waves/Wave2.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - WaveData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e930f5c4cf778640a252778e63d872e
+    m_Address: Assets/Waves/Wave1.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - WaveData
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a05175a747f79ad4ca31a5057031b51b, type: 2}
