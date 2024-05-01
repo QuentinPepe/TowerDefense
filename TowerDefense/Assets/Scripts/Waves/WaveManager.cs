@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Grid;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -19,9 +20,11 @@ namespace Waves
 
         [SerializeField] private GameObject placementPhaseUI;
         [SerializeField] private GameObject defensePhaseUI;
+        [SerializeField] private GridController gridController;
 
         public GameObject PlacementPhaseUI => placementPhaseUI;
         public GameObject DefensePhaseUI => defensePhaseUI;
+        public GridController GridController => gridController;
 
 
         private void Start()
@@ -52,6 +55,7 @@ namespace Waves
             _currentWaveIndex++;
             if (_currentWaveIndex >= _waves.Count)
             {
+                Debug.Log("All waves have been completed.");
                 // Toutes les vagues ont été terminées : TODO
                 return;
             }

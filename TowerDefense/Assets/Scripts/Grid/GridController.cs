@@ -2,6 +2,7 @@
 using System;
 using UnityEngine.Serialization;
 using Utils;
+using Waves;
 
 namespace Grid
 {
@@ -24,7 +25,7 @@ namespace Grid
             _camera = Camera.main;
         }
 
-        private void Update()
+        public void UpdateEvent()
         {
             HandleMouse();
         }
