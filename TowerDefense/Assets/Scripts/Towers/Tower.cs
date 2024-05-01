@@ -36,7 +36,9 @@ namespace Towers
             GameObject enemy = results[0].gameObject;
             RotatesToward(enemy.transform.position);
             GameObject projectileObject = Instantiate(Data.projectilePrefab, transform.position, transform.rotation);
-            projectileObject.GetComponent<Projectile>().SetTarget(enemy);
+            Projectile projectile = projectileObject.GetComponent<Projectile>();
+            projectile.SetTarget(enemy);
+            projectile.SetDamage(Data.damage);
             _lastShotTime = Time.time;
         }
 
