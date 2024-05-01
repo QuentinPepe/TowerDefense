@@ -7,7 +7,6 @@ using Waves;
 public class Game : MonoBehaviour
 {
     [SerializeField] private WaveManager waveManager;
-    [SerializeField] private UIManager uiManager;
     [SerializeField] private CreatureManager creatureManager;
     [SerializeField] private PlayerEntity playerEntity;
 
@@ -56,11 +55,7 @@ public class Game : MonoBehaviour
         Score = 0;
         Multiplier = 0;
         Currency = 500;
-    }
-
-    public void StartGame()
-    {
-        //TODO
+        Time.timeScale = 1;
     }
 
     public void HandleCreatureEliminated(Creature creature)
@@ -90,7 +85,7 @@ public class Game : MonoBehaviour
     }
     public void GameOver()
     {
-
+        Time.timeScale = 0;
         OnGameOver?.Invoke(new GameInfo(Score, waveManager.CurrentWave.WaveNumber, Currency,
             creatureManager.CurrentCreatureNumber));
     }
