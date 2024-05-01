@@ -1,46 +1,47 @@
-﻿using System;
-using CreatureS;
+﻿using CreatureS;
 using UnityEngine;
-
-public class Projectile : MonoBehaviour
+namespace Towers
 {
-    [SerializeField] private float speed;
-    private Rigidbody _rb;
-    private GameObject _target;
-    private int _damage;
-
-    private void Awake()
+    public class Projectile : MonoBehaviour
     {
-        _rb = GetComponent<Rigidbody>();
-    }
+        [SerializeField] private float speed;
+        private Rigidbody _rb;
+        private GameObject _target;
+        private int _damage;
 
-    private void Update()
-    {
-        if (!_target) return;
-        _rb.velocity = -speed * (transform.position - _target.transform.position);
-    }
-
-    public void SetTarget(GameObject target)
-    {
-        _target = target;
-    }
-
-    public void SetDamage(int damage)
-    {
-        _damage = damage;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.TryGetComponent(out Creature creature))
+        private void Awake()
         {
-            creature.TakeDamage(_damage);
-            Destroy(gameObject);
+            _rb = GetComponent<Rigidbody>();
         }
 
-        if (other.gameObject.layer.CompareTo(LayerMask.NameToLayer("Ground")) == 0)
+        private void Update()
         {
-            Destroy(gameObject);
+            if (!_target) return;
+            _rb.velocity = -speed * (transform.position - _target.transform.position);
+        }
+
+        public void SetTarget(GameObject target)
+        {
+            _target = target;
+        }
+
+        public void SetDamage(int damage)
+        {
+            _damage = damage;
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.TryGetComponent(out Creature creature))
+            {
+                creature.TakeDamage(_damage);
+                Destroy(gameObject);
+            }
+
+            if (other.gameObject.layer.CompareTo(LayerMask.NameToLayer("Ground")) == 0)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

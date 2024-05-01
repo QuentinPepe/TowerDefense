@@ -12,6 +12,7 @@ namespace Towers
         private float _lastShotTime;
         private float _placementTime;
         private LineRenderer _radiusLineRenderer;
+        private readonly Collider[] _results = new Collider[10];
 
         [SerializeField] private Transform weapon;
         private const float LineRenderYOffset = 0.1f;
@@ -64,15 +65,14 @@ namespace Towers
             if (Time.time - _lastShotTime < Data.fireRate)
                 return;
 
-            Collider[] results = new Collider[10];
-            int size = Physics.OverlapSphereNonAlloc(transform.position, Data.range, results,
+            int size = Physics.OverlapSphereNonAlloc(transform.position, Data.range, _results,
                 LayerMask.GetMask("Enemy"));
 
             GameObject closestEnemy = null;
             float closestDistance = float.MaxValue;
             for (int i = 0; i < size; i++)
             {
-                Collider enemy = results[i];
+                Collider enemy = _results[i];
                 float distance = Vector3.Distance(transform.position, enemy.transform.position);
                 if (!(distance < closestDistance)) continue;
                 closestEnemy = enemy.gameObject;

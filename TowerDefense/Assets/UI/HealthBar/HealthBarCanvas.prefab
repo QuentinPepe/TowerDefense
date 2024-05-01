@@ -163,6 +163,7 @@ GameObject:
   - component: {fileID: 6219608007721161647}
   - component: {fileID: 5323990057774903705}
   - component: {fileID: 2342892111128762402}
+  - component: {fileID: 3645160201810383732}
   m_Layer: 5
   m_Name: HealthBarCanvas
   m_TagString: Untagged
@@ -236,7 +237,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &5323990057774903705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,3 +268,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fill: {fileID: 962125622411234544}
+--- !u!114 &3645160201810383732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7411115945572866304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 211f2504bd9d48a486c65781eab080f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

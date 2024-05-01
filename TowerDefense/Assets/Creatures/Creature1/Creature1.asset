@@ -17,3 +17,4 @@ MonoBehaviour:
   speed: 1
   score: 10
   reward: 10
+  damage: 100
