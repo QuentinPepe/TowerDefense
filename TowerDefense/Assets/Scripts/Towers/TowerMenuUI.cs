@@ -44,7 +44,7 @@ namespace Towers
         {
             if (panel.IsOpen) return;
             Tower tower = towerManager.GetTower(position);
-            if (tower) Show(tower);
+            if (tower && tower.GetTimeSincePlacement() > 0.5f) Show(tower);
         }
 
         private void Show(Tower tower)

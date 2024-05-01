@@ -27,14 +27,21 @@ namespace Towers
 
             Vector3 worldPosition = new Vector3(position.X, 0, position.Z);
 
+            Tower newTower = CreateTower(towerData, position, worldPosition);
+            OnTowerPlaced?.Invoke(newTower);
+            Game.Instance.Currency -= towerData.cost;
+            return true;
+        }
+        private Tower CreateTower(TowerSO towerData, CellPosition position, Vector3 worldPosition)
+        {
+
             GameObject towerPrefab = towerData.prefab;
             GameObject towerObject = Instantiate(towerPrefab, worldPosition, Quaternion.identity, transform);
             if (!towerObject.TryGetComponent(out Tower newTower)) throw new MissingComponentException("Tower component not found on tower prefab.");
             newTower.Initialize(towerData, position);
+            _towers.Remove(position);
             _towers.Add(position, newTower);
-            OnTowerPlaced?.Invoke(newTower);
-            Game.Instance.Currency -= towerData.cost;
-            return true;
+            return newTower;
         }
 
         public void UpgradeTower(Tower tower)
@@ -46,7 +53,10 @@ namespace Towers
             }
 
             Game.Instance.Currency -= tower.Data.cost;
-            tower.Upgrade();
+            TowerSO upgradeData = tower.Data.upgrade;
+            Destroy(tower.gameObject);
+            CreateTower(upgradeData, tower.CellPosition, tower.transform.position);
+
             OnTowerUpgraded?.Invoke(tower);
         }
 

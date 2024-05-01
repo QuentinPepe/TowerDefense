@@ -10,6 +10,8 @@ namespace Towers
         public CellPosition CellPosition { get; private set; }
 
         private float _lastShotTime;
+        private float _placementTime;
+        [SerializeField] private Transform weapon;
 
         private void Update()
         {
@@ -22,6 +24,7 @@ namespace Towers
             Data = towerData;
             CellPosition = cellPosition;
             _lastShotTime = -Data.fireRate;
+            _placementTime = Time.time;
         }
 
         private void Shoot()
@@ -44,19 +47,19 @@ namespace Towers
 
         private void RotatesToward(Vector3 target)
         {
-            target.y = transform.position.y;
-            gameObject.transform.LookAt(target);
+            target.y = weapon.position.y;
+            weapon.transform.LookAt(target);
         }
 
-        public void Upgrade()
-        {
-            Data = Data.upgrade;
-            // TODO : Optionally update the tower's appearance or capabilities
-        }
 
         public bool CanUpgrade()
         {
             return Data.upgrade != null;
+        }
+
+        public float GetTimeSincePlacement()
+        {
+            return Time.time - _placementTime;
         }
     }
 }
