@@ -13,5 +13,6 @@ namespace Towers
         public float range;
         public TowerSO upgrade; // Reference to an upgraded version of this tower
         public Sprite icon;
+        public GameObject projectilePrefab;
     }
 }

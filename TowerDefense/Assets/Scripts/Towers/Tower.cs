@@ -16,6 +16,7 @@ namespace Towers
             if (Data.IsUnityNull()) return;
             Shoot();
         }
+
         public void Initialize(TowerSO towerData, CellPosition cellPosition)
         {
             Data = towerData;
@@ -29,12 +30,20 @@ namespace Towers
                 return;
 
             Collider[] results = new Collider[1];
-            int size = Physics.OverlapSphereNonAlloc(transform.position, Data.range, results, LayerMask.GetMask("Enemy"));
+            int size = Physics.OverlapSphereNonAlloc(transform.position, Data.range, results,
+                LayerMask.GetMask("Enemy"));
             if (size == 0) return;
             GameObject enemy = results[0].gameObject;
-            // TODO : Instantiate a projectile and shoot it towards the enemy
+            RotatesToward(enemy.transform.position);
+            GameObject projectileObject = Instantiate(Data.projectilePrefab, transform.position, transform.rotation);
+            projectileObject.GetComponent<Projectile>().SetTarget(enemy);
             _lastShotTime = Time.time;
+        }
 
+        private void RotatesToward(Vector3 target)
+        {
+            target.y = transform.position.y;
+            gameObject.transform.LookAt(target);
         }
 
         public void Upgrade()
