@@ -8,23 +8,23 @@ using Waves;
 
 public class UIManager : MonoBehaviour
 {
-    public TextMeshProUGUI ScoreText { get; private set; }
+    public TextMeshProUGUI ScoreText;
     [SerializeField] private TextMeshProUGUI multiplierText;
-    public TextMeshProUGUI CurrencyText { get; private set; }
-    public TextMeshProUGUI WaveText { get; private set; }
-    public TextMeshProUGUI RemainingCreatureText { get; private set; }
+    public TextMeshProUGUI CurrencyText;
+    public TextMeshProUGUI WaveText;
+    public TextMeshProUGUI RemainingCreatureText;
 
     private void Start()
     {
-        Game.Instance.OnCurrencyUpdated += (currency) => UpdateText(CurrencyText, currency);
-        Game.Instance.OnScoreUpdated += (score) => { UpdateText(ScoreText, score); };
+        Game.Instance.OnCurrencyUpdated += (currency) => UpdateText(CurrencyText, currency, "Currency : ");
+        Game.Instance.OnScoreUpdated += (score) => { UpdateText(ScoreText, score, "Score : "); };
 
         Game.Instance.OnCreatureRemoved += (currentCreatureNumber) =>
         {
-            UpdateText(RemainingCreatureText, currentCreatureNumber);
+            UpdateText(RemainingCreatureText, currentCreatureNumber, "Remaining : ");
         };
 
-        Game.Instance.OnMultiplierUpdated += (multiplier) => UpdateText(multiplierText, multiplier);
+        Game.Instance.OnMultiplierUpdated += (multiplier) => UpdateText(multiplierText, multiplier, "Multiplier : ");
         Game.Instance.GetWaveManager().OnWaveStarted += HandleNewWave;
     }
 
