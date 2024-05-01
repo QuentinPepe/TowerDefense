@@ -51,8 +51,7 @@ namespace Waves
             _currentWaveIndex++;
             if (_currentWaveIndex >= _waves.Count)
             {
-                Debug.Log("All waves have been completed.");
-                // Toutes les vagues ont été terminées : TODO
+                Game.Instance.GameOver();
                 return;
             }
 

@@ -81,13 +81,18 @@ public class Game : MonoBehaviour
         creatureManager.RemoveCreature(creature);
     }
 
-    public void CheckGameOver(int _currentHealth)
+    public void CheckGameOver(int currentHealth)
     {
-        if (_currentHealth <= 0)
+        if (currentHealth <= 0)
         {
-            OnGameOver?.Invoke(new GameInfo(Score, waveManager.CurrentWave.WaveNumber, Currency,
-                creatureManager.CurrentCreatureNumber));
+            GameOver();
         }
+    }
+    public void GameOver()
+    {
+
+        OnGameOver?.Invoke(new GameInfo(Score, waveManager.CurrentWave.WaveNumber, Currency,
+            creatureManager.CurrentCreatureNumber));
     }
 
     public void StartSpawnCreature(WaveSO currentWaveData)
