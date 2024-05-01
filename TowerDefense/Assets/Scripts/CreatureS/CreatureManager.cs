@@ -58,7 +58,7 @@ namespace CreatureS
         {
             _poolDictionary = new Dictionary<CreatureSO, ObjectPool<Creature>>();
             AsyncOperationHandle<IList<CreatureSO>> loadOperation =
-                Addressables.LoadAssetAsync<IList<CreatureSO>>("CreatureData");
+                Addressables.LoadAssetsAsync<CreatureSO>("CreatureData", null);
             await loadOperation.Task;
             foreach (CreatureSO creatureData in loadOperation.Result)
             {
