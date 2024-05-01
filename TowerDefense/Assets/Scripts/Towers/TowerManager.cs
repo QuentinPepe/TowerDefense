@@ -11,7 +11,7 @@ namespace Towers
         private Dictionary<CellPosition, Tower> _towers;
         public event Action<Tower> OnTowerPlaced;
         public event Action<Tower> OnTowerUpgraded;
-        public event Action<Tower> OnTowerSold;
+        public event Action<Tower> OnTowerDestroy;
 
         private void Awake()
         {
@@ -50,26 +50,31 @@ namespace Towers
             OnTowerUpgraded?.Invoke(tower);
         }
 
-        public void SellTower(Tower tower)
+        public void DestroyTower(Tower tower)
         {
             if (tower == null)
             {
-                Debug.LogError("Cannot sell tower: Invalid tower.");
+                Debug.LogError("Cannot destroy tower: Invalid tower.");
                 return;
             }
 
             _towers.Remove(tower.CellPosition);
-            OnTowerSold?.Invoke(tower);
+            OnTowerDestroy?.Invoke(tower);
             Destroy(tower.gameObject);
         }
 
-        private static bool CanAfford(int cost)
+        public bool CanAfford(int cost)
         {
             return cost <= Game.Instance.Currency;
         }
         public bool IsCellOccupied(CellPosition position)
         {
             return _towers.ContainsKey(position);
+        }
+
+        public Tower GetTower(CellPosition position)
+        {
+            return _towers.TryGetValue(position, out Tower tower) ? tower : null;
         }
     }
 }

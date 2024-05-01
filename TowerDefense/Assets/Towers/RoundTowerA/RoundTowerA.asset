@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerName: RoundTowerA
   prefab: {fileID: 3639474024946151853, guid: 1affeedd8229c5c4f8a1e5d206a56741, type: 3}
+  level: 1
   cost: 150
   damage: 20
   fireRate: 1

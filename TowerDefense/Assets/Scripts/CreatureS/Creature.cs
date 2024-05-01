@@ -44,5 +44,13 @@ namespace CreatureS
         {
             _navMeshAgent.Warp(position);
         }
+
+        private void Update()
+        {
+            if (_navMeshAgent.pathStatus == NavMeshPathStatus.PathComplete && _navMeshAgent.remainingDistance <= 0.1f)
+            {
+                OnCreatureReachedEnd?.Invoke(this);
+            }
+        }
     }
 }

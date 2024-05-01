@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerName: SquareTowerB
   prefab: {fileID: 2584894486866505308, guid: 11ef3cb41d011d84cbf23d50059756cf, type: 3}
+  level: 2
   cost: 150
   damage: 20
   fireRate: 1

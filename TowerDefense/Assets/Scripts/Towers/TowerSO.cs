@@ -7,6 +7,7 @@ namespace Towers
     {
         public string towerName;
         public GameObject prefab;
+        public int level;
         public int cost;
         public int damage;
         public float fireRate;

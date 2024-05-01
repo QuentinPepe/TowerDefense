@@ -61,12 +61,20 @@ namespace Waves
 
         private void SwitchToPlacementPhase()
         {
+            if (_currentPhase != null)
+            {
+                _currentPhase.OnFinished();
+            }
             _currentPhase = new PlacementPhase();
             _currentPhase.OnEnter(this);
         }
 
         public void SwitchToDefensePhase()
         {
+            if (_currentPhase != null)
+            {
+                _currentPhase.OnFinished();
+            }
             CurrentWave = _waves[_currentWaveIndex];
             _currentPhase = new DefensePhase();
             _currentPhase.OnEnter(this);
@@ -76,10 +84,6 @@ namespace Waves
         private void Update()
         {
             _currentPhase.Update();
-        }
-        public void FinishPhase()
-        {
-            _currentPhase.OnFinished();
         }
     }
 }

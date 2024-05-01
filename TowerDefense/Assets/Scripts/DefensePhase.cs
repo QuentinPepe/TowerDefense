@@ -23,7 +23,7 @@ public class DefensePhase : IPhase
     {
         if (remainingCreatures <= 0)
         {
-            _waveManager.FinishPhase();
+            _waveManager.AdvanceToNextWave();
         }
     }
 
@@ -31,7 +31,6 @@ public class DefensePhase : IPhase
     {
         _waveManager.DefensePhaseUI.SetActive(false);
         Game.Instance.OnCreatureRemoved -= HandleCreatureEliminated;
-        _waveManager.AdvanceToNextWave();
         _waveManager.OnWaveEnded?.Invoke();
     }
 }

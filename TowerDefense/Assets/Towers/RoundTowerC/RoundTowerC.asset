@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerName: RoundTowerC
   prefab: {fileID: 6102249147579984780, guid: 2aa00ec1bfc9218498bb26857082fd35, type: 3}
-  cost: 150
-  damage: 20
-  fireRate: 1
-  range: 20
+  level: 3
+  cost: 500
+  damage: 50
+  fireRate: 5
+  range: 30
   upgrade: {fileID: 0}
   icon: {fileID: 21300000, guid: e5d1c69c9771b0c42ac723b35c8bd3eb, type: 3}

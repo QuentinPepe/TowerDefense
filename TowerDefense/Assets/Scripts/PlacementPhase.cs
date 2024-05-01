@@ -12,15 +12,14 @@ public class PlacementPhase : IPhase
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) // En attendant un bouton UI
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            _waveManager.FinishPhase();
+            _waveManager.SwitchToDefensePhase();
         }
     }
 
     public void OnFinished()
     {
         _waveManager.PlacementPhaseUI.SetActive(false);
-        _waveManager.SwitchToDefensePhase();
     }
 }
