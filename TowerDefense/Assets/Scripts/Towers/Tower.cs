@@ -38,7 +38,7 @@ namespace Towers
             if (size == 0) return;
             GameObject enemy = results[0].gameObject;
             RotatesToward(enemy.transform.position);
-            GameObject projectileObject = Instantiate(Data.projectilePrefab, transform.position, transform.rotation);
+            GameObject projectileObject = Instantiate(Data.projectilePrefab, weapon.position, transform.rotation);
             Projectile projectile = projectileObject.GetComponent<Projectile>();
             projectile.SetTarget(enemy);
             projectile.SetDamage(Data.damage);

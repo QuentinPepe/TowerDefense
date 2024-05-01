@@ -17,7 +17,7 @@ public class Projectile : MonoBehaviour
     private void Update()
     {
         if (!_target) return;
-        _rb.velocity = speed * (transform.position - _target.transform.position);
+        _rb.velocity = -speed * (transform.position - _target.transform.position);
     }
 
     public void SetTarget(GameObject target)
