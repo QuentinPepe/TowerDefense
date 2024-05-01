@@ -64,15 +64,25 @@ namespace Towers
             if (Time.time - _lastShotTime < Data.fireRate)
                 return;
 
-            Collider[] results = new Collider[1];
+            Collider[] results = new Collider[10];
             int size = Physics.OverlapSphereNonAlloc(transform.position, Data.range, results,
                 LayerMask.GetMask("Enemy"));
-            if (size == 0) return;
-            GameObject enemy = results[0].gameObject;
-            RotatesToward(enemy.transform.position);
+
+            GameObject closestEnemy = null;
+            float closestDistance = float.MaxValue;
+            for (int i = 0; i < size; i++)
+            {
+                Collider enemy = results[i];
+                float distance = Vector3.Distance(transform.position, enemy.transform.position);
+                if (!(distance < closestDistance)) continue;
+                closestEnemy = enemy.gameObject;
+                closestDistance = distance;
+            }
+            if (!closestEnemy) return;
+            RotatesToward(closestEnemy.transform.position);
             GameObject projectileObject = Instantiate(Data.projectilePrefab, weapon.position, transform.rotation);
             Projectile projectile = projectileObject.GetComponent<Projectile>();
-            projectile.SetTarget(enemy);
+            projectile.SetTarget(closestEnemy);
             projectile.SetDamage(Data.damage);
             _lastShotTime = Time.time;
         }

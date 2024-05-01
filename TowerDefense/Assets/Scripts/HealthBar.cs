@@ -11,11 +11,17 @@ public class HealthBar : MonoBehaviour
     private Camera _camera;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         transform.parent.GetComponent<LivingEntity>().OnDamageTaken += UpdateHealth;
         _fillImage = fill.GetComponent<Image>();
         _camera = Camera.main;
+    }
+
+    private void OnEnable()
+    {
+        fill.anchorMax = new Vector2(1, fill.anchorMax.y);
+        _fillImage.color = Color.green;
     }
 
     private void Update()

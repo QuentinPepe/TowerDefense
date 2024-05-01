@@ -35,6 +35,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - WaveData
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e9fb04fa6c866034aa664cfd6349e0bd
+    m_Address: Assets/Waves/Wave3.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - WaveData
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a05175a747f79ad4ca31a5057031b51b, type: 2}
   m_SchemaSet:
