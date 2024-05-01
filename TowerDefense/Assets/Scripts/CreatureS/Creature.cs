@@ -26,6 +26,12 @@ namespace CreatureS
             OnCreatureReachedEnd += Game.Instance.HandleCreatureReachedEnd;
         }
 
+        public void OnEnable()
+        {
+            if (Data != null)
+                _currentHealth = Data.health;
+        }
+
         public override void TakeDamage(int damage)
         {
             _currentHealth -= damage;

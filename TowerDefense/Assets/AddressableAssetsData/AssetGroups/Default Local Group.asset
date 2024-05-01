@@ -23,18 +23,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - CreatureData
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 494c3e5c22867234cb9bea77acccc470
-    m_Address: Assets/Waves/Wave2.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - WaveData
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6e930f5c4cf778640a252778e63d872e
-    m_Address: Assets/Waves/Wave1.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - WaveData
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e9fb04fa6c866034aa664cfd6349e0bd
     m_Address: Assets/Waves/Wave3.asset
     m_ReadOnly: 0

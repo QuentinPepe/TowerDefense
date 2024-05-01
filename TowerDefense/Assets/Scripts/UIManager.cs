@@ -19,8 +19,7 @@ public class UIManager : MonoBehaviour
         Game.Instance.OnCurrencyUpdated += (currency) => UpdateText(CurrencyText, currency, "Currency : ");
         Game.Instance.OnScoreUpdated += (score) => { UpdateText(ScoreText, score, "Score : "); };
 
-        Game.Instance.OnCreatureRemoved += (currentCreatureNumber) =>
-        {
+        Game.Instance.OnCreatureRemoved += (currentCreatureNumber) => {
             UpdateText(RemainingCreatureText, currentCreatureNumber, "Remaining : ");
         };
 
@@ -41,7 +40,7 @@ public class UIManager : MonoBehaviour
 
     private void HandleNewWave(WaveSO currentWave)
     {
-        UpdateText(RemainingCreatureText, currentWave.Creatures.Count());
+        UpdateText(RemainingCreatureText, currentWave.Creatures.Count(), "Remaining : ");
         UpdateWaveText(currentWave.WaveNumber);
     }
 }

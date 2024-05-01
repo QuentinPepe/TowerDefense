@@ -79,6 +79,7 @@ namespace Towers
                 closestDistance = distance;
             }
             if (!closestEnemy) return;
+            if (closestDistance > Data.range) return;
             RotatesToward(closestEnemy.transform.position);
             GameObject projectileObject = Instantiate(Data.projectilePrefab, weapon.position, transform.rotation);
             Projectile projectile = projectileObject.GetComponent<Projectile>();
