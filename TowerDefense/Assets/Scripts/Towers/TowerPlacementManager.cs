@@ -61,7 +61,7 @@ namespace Towers
         {
             if (_selectedTower.IsUnityNull()) return;
             if (_ghostTowerInstance.IsUnityNull()) return;
-            Vector3 worldPosition = new Vector3(position.X, 0, position.Z);
+            Vector3 worldPosition = new Vector3(position.X + 0.5f, 0, position.Z + 0.5f);
             _ghostTowerInstance.transform.position = worldPosition;
             _ghostTowerInstance.SetActive(true);
             UpdateGroundColor(position);

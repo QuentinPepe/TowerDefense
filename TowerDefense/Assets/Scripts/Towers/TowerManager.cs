@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using Grid;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -25,9 +26,11 @@ namespace Towers
                 return false;
             }
 
-            Vector3 worldPosition = new Vector3(position.X, 0, position.Z);
+            Vector3 worldPosition = new Vector3(position.X + 0.5f, 0, position.Z + 0.5f);
 
             Tower newTower = CreateTower(towerData, position, worldPosition);
+            newTower.transform.localScale = Vector3.zero;
+            newTower.transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutBounce);
             OnTowerPlaced?.Invoke(newTower);
             Game.Instance.Currency -= towerData.cost;
             return true;
