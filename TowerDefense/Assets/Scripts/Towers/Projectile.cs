@@ -38,7 +38,7 @@ public class Projectile : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (other.gameObject.layer == LayerMask.GetMask("Ground"))
+        if (other.gameObject.layer.CompareTo(LayerMask.NameToLayer("Ground")) == 0)
         {
             Destroy(gameObject);
         }
