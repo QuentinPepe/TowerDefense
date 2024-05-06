@@ -16,6 +16,6 @@ MonoBehaviour:
   health: 90
   speed: 1
   score: 15
-  reward: 80
+  reward: 85
   damage: 40
   hitSound: {fileID: 8300000, guid: 18d3f844116bbae4bbdc8a83600f0b3b, type: 3}

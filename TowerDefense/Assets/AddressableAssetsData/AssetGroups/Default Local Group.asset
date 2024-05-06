@@ -41,6 +41,18 @@ MonoBehaviour:
     m_SerializedLabels:
     - WaveData
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 86153c407f0df194c95256aab1b101dc
+    m_Address: Assets/Creatures/Creature2/Creature2.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - CreatureData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 605c3b632ce738a46aa2ad88fa9b1ae5
+    m_Address: Assets/Creatures/Creature3/Creature3.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - CreatureData
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a05175a747f79ad4ca31a5057031b51b, type: 2}
   m_SchemaSet:

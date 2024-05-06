@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   creatures:
   - {fileID: 11400000, guid: 6b8751d984f3fa64393c731edcadeff7, type: 2}
+  - {fileID: 11400000, guid: 605c3b632ce738a46aa2ad88fa9b1ae5, type: 2}
   - {fileID: 11400000, guid: 6b8751d984f3fa64393c731edcadeff7, type: 2}
-  - {fileID: 11400000, guid: 6b8751d984f3fa64393c731edcadeff7, type: 2}
-  - {fileID: 11400000, guid: 6b8751d984f3fa64393c731edcadeff7, type: 2}
+  - {fileID: 11400000, guid: 86153c407f0df194c95256aab1b101dc, type: 2}
   - {fileID: 11400000, guid: 6b8751d984f3fa64393c731edcadeff7, type: 2}
   spawnInterval: 3
   waveNumber: 2
