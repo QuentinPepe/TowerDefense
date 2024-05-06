@@ -20,13 +20,22 @@ namespace Grid
         [SerializeField] private int height = 11;
         [SerializeField] private float cellSize = 1f;
         [SerializeField] private Transform cameraTarget;
+        [SerializeField] private LineRenderer lineRenderer;
 
         public const int ExtensionLayers = 15;
-
         private void Awake()
         {
             boxCollider = GetComponent<BoxCollider>();
             gridState.InitializeMatrix(width, height);
+
+
+            lineRenderer.startWidth = 0.1f;
+            lineRenderer.endWidth = 0.1f;
+            lineRenderer.positionCount = 5;
+            lineRenderer.loop = true;
+            lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+            lineRenderer.startColor = Color.black;
+            lineRenderer.endColor = Color.black;
             UpdateGrid();
         }
 
@@ -119,6 +128,13 @@ namespace Grid
 
             boxCollider.size = gridSize;
             boxCollider.center = new Vector3(ExtensionLayers * cellSize + gridSize.x / 2, 20, ExtensionLayers * cellSize + gridSize.z / 2);
+
+            Vector3 bottomLeft = new Vector3(ExtensionLayers * cellSize, 0.2f, ExtensionLayers * cellSize);
+            Vector3 bottomRight = bottomLeft + new Vector3(gridSize.x, 0.2f, 0);
+            Vector3 topRight = bottomRight + new Vector3(0, 0.2f, gridSize.z);
+            Vector3 topLeft = bottomLeft + new Vector3(0, 0.2f, gridSize.z);
+
+            lineRenderer.SetPositions(new[] { bottomLeft, bottomRight, topRight, topLeft, bottomLeft });
         }
     }
 }
