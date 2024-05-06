@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca0690298b204ec45a740499ae761c5e, type: 3}
-  m_Name: Creature1
+  m_Name: Creature2
   m_EditorClassIdentifier: 
-  prefab: {fileID: 2299141714564060189, guid: 2cfdf4f7f2190a441ab3b2af6ed954ba, type: 3}
-  health: 90
-  speed: 1
-  score: 15
-  reward: 80
-  damage: 40
-  hitSound: {fileID: 8300000, guid: 18d3f844116bbae4bbdc8a83600f0b3b, type: 3}
+  prefab: {fileID: 2299141714564060189, guid: e4ee1dbf739988543b673f64e2d99c60, type: 3}
+  health: 200
+  speed: 0.6
+  score: 20
+  reward: 100
+  damage: 90
+  hitSound: {fileID: 0}
