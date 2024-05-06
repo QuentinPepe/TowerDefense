@@ -61,8 +61,8 @@ namespace Towers
         private void Show(Tower tower)
         {
             upgradeButton.onClick.AddListener(() => {
-                towerManager.UpgradeTower(tower);
-                Refresh(tower);
+                Tower newTower = towerManager.UpgradeTower(tower);
+                Refresh(newTower);
             });
 
             destroyButton.onClick.AddListener(() => {

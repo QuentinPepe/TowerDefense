@@ -71,20 +71,21 @@ namespace Towers
             return newTower;
         }
 
-        public void UpgradeTower(Tower tower)
+        public Tower UpgradeTower(Tower tower)
         {
             if (tower == null || !tower.CanUpgrade() || !CanAfford(tower.Data.upgrade.cost))
             {
                 Debug.LogError("Cannot upgrade tower: Invalid tower or insufficient funds.");
-                return;
+                return null;
             }
 
             Game.Instance.Currency -= tower.Data.upgrade.cost;
             TowerSO upgradeData = tower.Data.upgrade;
             Destroy(tower.gameObject);
-            CreateTower(upgradeData, tower.CellPosition, tower.transform.position);
+            Tower upgradedTower = CreateTower(upgradeData, tower.CellPosition, tower.transform.position);
+            OnTowerUpgraded?.Invoke(upgradedTower);
 
-            OnTowerUpgraded?.Invoke(tower);
+            return upgradedTower;
         }
 
         public void DestroyTower(Tower tower)
