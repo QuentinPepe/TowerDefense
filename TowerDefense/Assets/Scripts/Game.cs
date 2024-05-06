@@ -20,6 +20,7 @@ public class Game : MonoBehaviour
     public Action<int> OnMultiplierUpdated;
     public Action<int> OnCurrencyUpdated;
     public Action<GameInfo> OnGameOver;
+    public Action OnTowerHit;
     public static Game Instance { get; private set; }
 
     public int Currency {
@@ -74,6 +75,7 @@ public class Game : MonoBehaviour
         Score += creature.Data.score * Multiplier;
         playerEntity.TakeDamage(creature.Data.damage);
         creatureManager.RemoveCreature(creature);
+        OnTowerHit?.Invoke();
     }
 
     public void CheckGameOver(int currentHealth)

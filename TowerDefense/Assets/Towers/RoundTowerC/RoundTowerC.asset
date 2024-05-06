@@ -22,4 +22,4 @@ MonoBehaviour:
   upgrade: {fileID: 0}
   icon: {fileID: 21300000, guid: e5d1c69c9771b0c42ac723b35c8bd3eb, type: 3}
   projectilePrefab: {fileID: 8461013570496944278, guid: 9efd0ea0417ee91428637c1a1a32c252, type: 3}
-  shootSound: {fileID: 0}
+  shootSound: {fileID: 8300000, guid: 8c488a571fe01b14387c5d1c068bce90, type: 3}

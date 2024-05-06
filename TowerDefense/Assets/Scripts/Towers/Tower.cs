@@ -17,8 +17,11 @@ namespace Towers
         [SerializeField] private Transform weapon;
         private const float LineRenderYOffset = 0.1f;
 
+        private AudioSource _audioSource;
+
         private void Start()
         {
+            _audioSource = GetComponent<AudioSource>();
             _radiusLineRenderer = gameObject.AddComponent<LineRenderer>();
             _radiusLineRenderer.material = new Material(Shader.Find("Sprites/Default"));
             _radiusLineRenderer.startWidth = 0.1f;
@@ -57,7 +60,7 @@ namespace Towers
             CellPosition = cellPosition;
             _lastShotTime = -Data.fireRate;
             _placementTime = Time.time;
-
+            _audioSource.clip = Data.shootSound;
         }
 
         private void Shoot()
@@ -86,6 +89,7 @@ namespace Towers
             projectile.SetTarget(closestEnemy);
             projectile.SetDamage(Data.damage);
             _lastShotTime = Time.time;
+            _audioSource.Play();
         }
 
         private void RotatesToward(Vector3 target)
