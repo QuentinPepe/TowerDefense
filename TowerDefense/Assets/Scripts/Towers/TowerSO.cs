@@ -15,5 +15,6 @@ namespace Towers
         public TowerSO upgrade; // Reference to an upgraded version of this tower
         public Sprite icon;
         public GameObject projectilePrefab;
+        public AudioClip shootSound;
     }
 }
