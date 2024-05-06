@@ -7,7 +7,7 @@ public class NavigationManager : MonoBehaviour
 {
     public void Play()
     {
-        SceneManager.LoadScene("_Main");
+        SceneManager.LoadScene("Main");
     }
 
     public void Quit()
