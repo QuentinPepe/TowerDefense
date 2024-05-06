@@ -59,12 +59,14 @@ namespace Towers
 
         private void Show(Tower tower)
         {
-            upgradeButton.onClick.AddListener(() => {
+            upgradeButton.onClick.AddListener(() =>
+            {
                 towerManager.UpgradeTower(tower);
                 Refresh(tower);
             });
 
-            destroyButton.onClick.AddListener(() => {
+            destroyButton.onClick.AddListener(() =>
+            {
                 towerManager.DestroyTower(tower);
                 Hide();
             });
@@ -82,11 +84,13 @@ namespace Towers
             panel.Show();
         }
 
-        private void AnimateValue(TextMeshProUGUI textComponent, float startValue, float endValue, float duration = 1.0f)
+        private void AnimateValue(TextMeshProUGUI textComponent, float startValue, float endValue,
+            float duration = 1.0f)
         {
-            DOTween.To(() => startValue, x => {
+            DOTween.To(() => startValue, x =>
+            {
                 startValue = x;
-                textComponent.text = Mathf.RoundToInt(startValue).ToString();
+                textComponent.text = startValue.ToString();
             }, endValue, duration);
         }
 

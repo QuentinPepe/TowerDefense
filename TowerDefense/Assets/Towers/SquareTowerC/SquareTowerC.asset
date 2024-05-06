@@ -15,9 +15,11 @@ MonoBehaviour:
   towerName: SquareTowerC
   prefab: {fileID: 5120950343039605177, guid: 41d343b72ff9131488689455283fea4a, type: 3}
   level: 3
-  cost: 150
-  damage: 20
-  fireRate: 1
-  range: 20
+  cost: 500
+  damage: 22
+  fireRate: 2.7
+  range: 9
   upgrade: {fileID: 0}
   icon: {fileID: 21300000, guid: e90328ff88e682245a3a998d3be645b1, type: 3}
+  projectilePrefab: {fileID: 8461013570496944278, guid: 9efd0ea0417ee91428637c1a1a32c252, type: 3}
+  shootSound: {fileID: 0}
