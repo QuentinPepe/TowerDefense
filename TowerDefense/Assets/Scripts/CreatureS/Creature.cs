@@ -9,8 +9,10 @@ namespace CreatureS
         private NavMeshAgent _navMeshAgent;
         public CreatureSO Data { get; private set; }
         private int _currentHealth;
-        public Action<Creature> OnCreatureEliminated;
-        public Action<Creature> OnCreatureReachedEnd;
+        private Action<Creature> _onCreatureEliminated;
+        private Action<Creature> _onCreatureReachedEnd;
+
+        private AudioSource _audioSource;
 
         public void Initialize(CreatureSO creatureData)
         {
@@ -18,12 +20,14 @@ namespace CreatureS
             Data = creatureData;
             _navMeshAgent.speed = Data.speed;
             _currentHealth = Data.health;
+            _audioSource = GetComponent<AudioSource>();
+            _audioSource.clip = Data.hitSound;
         }
 
         private void Start()
         {
-            OnCreatureEliminated += Game.Instance.HandleCreatureEliminated;
-            OnCreatureReachedEnd += Game.Instance.HandleCreatureReachedEnd;
+            _onCreatureEliminated += Game.Instance.HandleCreatureEliminated;
+            _onCreatureReachedEnd += Game.Instance.HandleCreatureReachedEnd;
         }
 
         public void OnEnable()
@@ -36,9 +40,10 @@ namespace CreatureS
         {
             _currentHealth -= damage;
             OnDamageTaken?.Invoke(_currentHealth / (float)Data.health);
+            _audioSource.Play();
             if (_currentHealth <= 0)
             {
-                OnCreatureEliminated?.Invoke(this);
+                _onCreatureEliminated?.Invoke(this);
             }
         }
 
@@ -55,7 +60,7 @@ namespace CreatureS
         {
             if (_navMeshAgent.pathStatus == NavMeshPathStatus.PathComplete && _navMeshAgent.remainingDistance <= 0.1f)
             {
-                OnCreatureReachedEnd?.Invoke(this);
+                _onCreatureReachedEnd?.Invoke(this);
             }
         }
     }
