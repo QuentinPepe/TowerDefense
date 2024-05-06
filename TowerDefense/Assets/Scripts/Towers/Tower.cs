@@ -21,7 +21,6 @@ namespace Towers
 
         private void Start()
         {
-            _audioSource = GetComponent<AudioSource>();
             _radiusLineRenderer = gameObject.AddComponent<LineRenderer>();
             _radiusLineRenderer.material = new Material(Shader.Find("Sprites/Default"));
             _radiusLineRenderer.startWidth = 0.1f;
@@ -60,6 +59,7 @@ namespace Towers
             CellPosition = cellPosition;
             _lastShotTime = -Data.fireRate;
             _placementTime = Time.time;
+            _audioSource = GetComponent<AudioSource>();
             _audioSource.clip = Data.shootSound;
         }
 
