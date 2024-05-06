@@ -17,12 +17,12 @@ public class OptionVolume : MonoBehaviour
 
         for (int i = 0; i < sliders.Count; i++)
         {
-            sliders[i].value = audioMixer.GetFloat(groupNames[i], out float value) ? value : 0;
+            sliders[i].value = audioMixer.GetFloat(groupNames[i], out float value) ? Mathf.Pow(10, value / 20) : 1;
         }
     }
 
     private void HandleSliderValueChanged(float value, string groupName)
     {
-        audioMixer.SetFloat(groupName, value);
+        audioMixer.SetFloat(groupName, Mathf.Log10(value) * 20);
     }
 }
