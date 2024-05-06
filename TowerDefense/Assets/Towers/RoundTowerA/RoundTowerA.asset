@@ -16,8 +16,8 @@ MonoBehaviour:
   prefab: {fileID: 3639474024946151853, guid: 1affeedd8229c5c4f8a1e5d206a56741, type: 3}
   level: 1
   cost: 150
-  damage: 20
-  fireRate: 1
+  damage: 22
+  fireRate: 0.8
   range: 3
   upgrade: {fileID: 11400000, guid: 6e4fc229000a50243b0e3a79bc2a8ac3, type: 2}
   icon: {fileID: 21300000, guid: 512bad354cf35fb4693fcdbd1fc08199, type: 3}

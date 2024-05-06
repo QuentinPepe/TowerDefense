@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Creature1
   m_EditorClassIdentifier: 
   prefab: {fileID: 2299141714564060189, guid: 2cfdf4f7f2190a441ab3b2af6ed954ba, type: 3}
-  health: 100
+  health: 90
   speed: 1
-  score: 10
-  reward: 10
-  damage: 100
+  score: 15
+  reward: 20
+  damage: 40

@@ -17,7 +17,8 @@ MonoBehaviour:
   level: 3
   cost: 500
   damage: 50
-  fireRate: 5
-  range: 30
+  fireRate: 2
+  range: 4
   upgrade: {fileID: 0}
   icon: {fileID: 21300000, guid: e5d1c69c9771b0c42ac723b35c8bd3eb, type: 3}
+  projectilePrefab: {fileID: 8461013570496944278, guid: 9efd0ea0417ee91428637c1a1a32c252, type: 3}
