@@ -9,7 +9,7 @@ namespace Grid
         private GridState _gridState;
         private readonly Vector2 _buttonSize = new Vector2(30, 30);
         private const float Padding = 10f;
-        private Vector2 scrollPosition; // Field to store the scroll position
+        private Vector2 _scrollPosition;
 
         public static void ShowWindow(GridState currentState)
         {
@@ -47,7 +47,7 @@ namespace Grid
             GUILayout.Space(Padding);
 
             // Scroll view begins here
-            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, GUILayout.Width(minSize.x), GUILayout.Height(minSize.y - 50));
+            _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition, GUILayout.Width(minSize.x), GUILayout.Height(minSize.y - 50));
             try
             {
                 for (int z = _gridState.Height - 1; z >= 0; z--)
@@ -55,7 +55,7 @@ namespace Grid
                     EditorGUILayout.BeginHorizontal();
                     for (int x = 0; x < _gridState.Width; x++)
                     {
-                        CellPosition position = new CellPosition(x, z);
+                        CellPosition position = new CellPosition(x + GridView.ExtensionLayers, z + GridView.ExtensionLayers);
                         int currentState = _gridState.GetState(position);
 
                         Color color = currentState switch

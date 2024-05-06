@@ -1,7 +1,6 @@
 ﻿using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEditor;
-using UnityEngine.Serialization;
 
 namespace Grid
 {
@@ -9,10 +8,10 @@ namespace Grid
     {
         public GridModel GridModel { get; private set; }
         private GameObject[,] _cells;
+        [SerializeField] private BoxCollider boxCollider;
 
         [SerializeField] private GameObject floorPrefab;
         [SerializeField] private GameObject walkablePrefab;
-
 
         [SerializeField] private NavMeshSurface navMeshSurface;
         [SerializeField] private GridController gridController;
@@ -20,9 +19,13 @@ namespace Grid
         [SerializeField] private int width = 11;
         [SerializeField] private int height = 11;
         [SerializeField] private float cellSize = 1f;
-        
+        [SerializeField] private Transform cameraTarget;
+
+        public const int ExtensionLayers = 15;
+
         private void Awake()
         {
+            boxCollider = GetComponent<BoxCollider>();
             gridState.InitializeMatrix(width, height);
             UpdateGrid();
         }
@@ -50,12 +53,16 @@ namespace Grid
         public void UpdateGrid()
         {
             ClearGrid();
-            CreateGrid(width, height, cellSize);
+            CreateGrid(width + 2 * ExtensionLayers, height + 2 * ExtensionLayers, cellSize);
+            GenerateConfinementArea();
+
+            Vector3 gridSize = new Vector3(width * cellSize, 40, height * cellSize);
+            cameraTarget.position = new Vector3(ExtensionLayers * cellSize + gridSize.x / 2, 0, ExtensionLayers * cellSize + gridSize.z / 2);
         }
 
-        private void CreateGrid(int width, int height, float cellSize)
+        private void CreateGrid(int totalWidth, int totalHeight, float cellSize)
         {
-            GridModel = new GridModel(width, height, cellSize);
+            GridModel = new GridModel(totalWidth, totalHeight, cellSize);
             BuildGrid();
         }
 
@@ -66,16 +73,16 @@ namespace Grid
             {
                 for (int y = 0; y < GridModel.Height; y++)
                 {
-                    GameObject cell = Instantiate(
-                        gridController.IsCellWalkable(new CellPosition(x, y)) ? walkablePrefab : floorPrefab,
-                        GridModel.GetWorldPosition(x, y) + new Vector3(0.5f, 0, 0.5f) * GridModel.CellSize,
-                        Quaternion.identity, transform);
+                    bool isExtension = x < ExtensionLayers || x >= GridModel.Width - ExtensionLayers || y < ExtensionLayers || y >= GridModel.Height - ExtensionLayers;
+                    GameObject prefab = isExtension ? floorPrefab : (gridController.IsCellWalkable(new CellPosition(x, y)) ? walkablePrefab : floorPrefab);
+
+                    GameObject cell = Instantiate(prefab, GridModel.GetWorldPosition(x, y) + new Vector3(0.5f, 0, 0.5f) * GridModel.CellSize, Quaternion.identity, transform);
 
                     cell.transform.position = GridModel.GetWorldPosition(x, y) + new Vector3(0.5f, 0, 0.5f) * GridModel.CellSize;
                     cell.transform.parent = transform;
                     cell.name = $"Cell_{x}_{y}";
+                    if (isExtension) continue;
                     cell.layer = LayerMask.NameToLayer("Ground");
-
                     NavMeshModifier navMeshModifier = cell.AddComponent<NavMeshModifier>();
                     navMeshModifier.overrideArea = true;
 
@@ -98,11 +105,20 @@ namespace Grid
                     DestroyImmediate(child.gameObject);
             }
         }
+
         public GameObject GetCell(CellPosition position)
         {
             if (position.X < 0 || position.X >= GridModel.Width || position.Z < 0 || position.Z >= GridModel.Height)
                 return null;
             return _cells[position.X, position.Z];
+        }
+
+        private void GenerateConfinementArea()
+        {
+            Vector3 gridSize = new Vector3(width * cellSize, 40, height * cellSize);
+
+            boxCollider.size = gridSize;
+            boxCollider.center = new Vector3(ExtensionLayers * cellSize + gridSize.x / 2, 20, ExtensionLayers * cellSize + gridSize.z / 2);
         }
     }
 }

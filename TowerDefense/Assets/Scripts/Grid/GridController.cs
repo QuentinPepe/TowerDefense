@@ -32,12 +32,13 @@ namespace Grid
 
         private void HandleMouse()
         {
+            if (UIUtils.IsPointerOverUIObject()) return;
+
             Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
             if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer)) return;
             gridView.GridModel.GetXY(hit.point, out int x, out int y);
             CellPosition position = new CellPosition(x, y);
 
-            if (UIUtils.IsPointerOverUIObject()) return;
 
             if (Input.GetMouseButtonDown(0))
                 OnCellClick?.Invoke(position);

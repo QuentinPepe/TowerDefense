@@ -38,29 +38,29 @@ namespace Grid
 
         public int GetState(CellPosition cellPosition)
         {
-            int x = cellPosition.X;
-            int z = cellPosition.Z;
+            int x = cellPosition.X - 15;
+            int z = cellPosition.Z - 15;
             if (x < 0 || x >= width || z < 0 || z >= height)
-                throw new ArgumentOutOfRangeException("x and y must be within the grid boundaries.");
+                throw new IndexOutOfRangeException("Cell position out of bounds");
             return stateMatrix[z * width + x];
         }
 
         private void SetState(CellPosition cellPosition, int state)
         {
-            int x = cellPosition.X;
-            int z = cellPosition.Z;
+            int x = cellPosition.X - GridView.ExtensionLayers;
+            int z = cellPosition.Z - GridView.ExtensionLayers;
             if (x < 0 || x >= width || z < 0 || z >= height)
-                throw new ArgumentOutOfRangeException("x and y must be within the grid boundaries.");
+                throw new IndexOutOfRangeException("Cell position out of bounds");
             stateMatrix[z * width + x] = state;
             gridView.UpdateGrid();
 
             if (state == 2)
             {
-                creatureManager.SetStartPosition(cellPosition);
+                creatureManager.SetStartPosition(new CellPosition(x + GridView.ExtensionLayers, z + GridView.ExtensionLayers));
             }
             else if (state == 3)
             {
-                creatureManager.SetEndPosition(cellPosition);
+                creatureManager.SetEndPosition(new CellPosition(x + GridView.ExtensionLayers, z + GridView.ExtensionLayers));
             }
         }
 
