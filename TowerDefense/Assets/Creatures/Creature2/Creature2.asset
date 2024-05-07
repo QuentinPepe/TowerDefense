@@ -17,5 +17,5 @@ MonoBehaviour:
   speed: 0.6
   score: 20
   reward: 100
-  damage: 90
+  damage: 75
   hitSound: {fileID: 0}

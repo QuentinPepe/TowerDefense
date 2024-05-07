@@ -53,6 +53,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - CreatureData
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 83f16cf3b7b5d1d439007a83528ba846
+    m_Address: Assets/Waves/Wave4.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - WaveData
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a05175a747f79ad4ca31a5057031b51b, type: 2}
   m_SchemaSet:
