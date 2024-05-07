@@ -21,6 +21,8 @@ namespace Towers
 
         private void Start()
         {
+            if (gameObject.TryGetComponent(out _radiusLineRenderer))
+                return;
             _radiusLineRenderer = gameObject.AddComponent<LineRenderer>();
             _radiusLineRenderer.material = new Material(Shader.Find("Sprites/Default"));
             _radiusLineRenderer.startWidth = 0.1f;

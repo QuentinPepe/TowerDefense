@@ -15,9 +15,9 @@ namespace CreatureS
     {
         [SerializeField] private Vector3 spawnPoint;
         [SerializeField] private Vector3 targetPoint;
-        private Dictionary<CreatureSO, ObjectPool<Creature>> _poolDictionary;
-        private ObjectPool<Creature> _creaturePool;
-        public Action<Creature> OnCreatureSpawned;
+        public Dictionary<CreatureSO, ObjectPool<ICreature>> PoolDictionary { get; private set; }
+        private ObjectPool<ICreature> _creaturePool;
+        public Action<ICreature> OnCreatureSpawned;
         public int CurrentCreatureNumber { get; private set; }
 
         private void Start()
@@ -27,21 +27,28 @@ namespace CreatureS
 
         private void SpawnCreature(CreatureSO creatureData, Vector3 spawnPosition, Vector3 target)
         {
-            _creaturePool = _poolDictionary[creatureData];
-            Creature creature = _creaturePool.Get();
-            creature.gameObject.SetActive(true);
+            _creaturePool = PoolDictionary[creatureData];
+            ICreature creature = _creaturePool.Get();
+            creature.SetActive(true);
             OnCreatureSpawned?.Invoke(creature);
             creature.TeleportTo(spawnPosition);
             creature.MoveTo(target);
         }
 
-        public void RemoveCreature(Creature creature)
+        public void RemoveCreature(ICreature creature)
         {
             CurrentCreatureNumber--;
             Game.Instance.OnCreatureRemoved?.Invoke(CurrentCreatureNumber);
-            _creaturePool = _poolDictionary[creature.Data];
-            creature.gameObject.SetActive(false);
-            _creaturePool.Release(creature);
+
+            if (PoolDictionary.TryGetValue(creature.Data, out _creaturePool))
+            {
+                creature.SetActive(false);
+                _creaturePool.Release(creature);
+            }
+            else
+            {
+                Debug.LogWarning($"No pool found for {creature.Data.name}. Skipping release.");
+            }
         }
 
         public IEnumerator SpawnCoroutine(WaveSO currentWaveData)
@@ -56,20 +63,20 @@ namespace CreatureS
 
         private async void CreatePoolDictionary()
         {
-            _poolDictionary = new Dictionary<CreatureSO, ObjectPool<Creature>>();
+            PoolDictionary = new Dictionary<CreatureSO, ObjectPool<ICreature>>();
             AsyncOperationHandle<IList<CreatureSO>> loadOperation =
                 Addressables.LoadAssetsAsync<CreatureSO>("CreatureData", null);
             await loadOperation.Task;
             foreach (CreatureSO creatureData in loadOperation.Result)
             {
-                ObjectPool<Creature> creaturePool = new ObjectPool<Creature>(() => {
+                ObjectPool<ICreature> creaturePool = new ObjectPool<ICreature>(() => {
                         GameObject creatureObject = Instantiate(creatureData.prefab);
-                        Creature creature = creatureObject.GetComponent<Creature>();
+                        ICreature creature = creatureObject.GetComponent<ICreature>();
                         creature.Initialize(creatureData);
                         return creature;
-                    }, (creature) => creature.gameObject.SetActive(true),
-                    (creature) => creature.gameObject.SetActive(false));
-                _poolDictionary.Add(creatureData, creaturePool);
+                    }, (creature) => creature.SetActive(true),
+                    (creature) => creature.SetActive(false));
+                PoolDictionary.Add(creatureData, creaturePool);
             }
         }
         public void SetStartPosition(CellPosition cellPosition)

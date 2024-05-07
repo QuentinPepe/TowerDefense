@@ -14,7 +14,7 @@ namespace Towers
         public event Action<Tower> OnTowerUpgraded;
         public event Action<Tower> OnTowerDestroy;
 
-        [SerializeField] private GridController gridController;
+        public GridController gridController;
         [SerializeField] private AudioClip placeTowerSound;
 
 

@@ -21,7 +21,7 @@ public class Game : MonoBehaviour
     public Action<int> OnCurrencyUpdated;
     public Action<GameInfo> OnGameOver;
     public Action OnTowerHit;
-    public static Game Instance { get; private set; }
+    public static Game Instance { get; set; }
 
     public int Currency {
         get => _currency;
@@ -30,16 +30,16 @@ public class Game : MonoBehaviour
             OnCurrencyUpdated?.Invoke(_currency);
         }
     }
-    private int Multiplier {
+    public int Multiplier {
         get => _multiplier;
         set {
             _multiplier = value;
             OnMultiplierUpdated?.Invoke(Multiplier);
         }
     }
-    private int Score {
+    public int Score {
         get => _score;
-        set {
+        private set {
             _score = value;
             OnScoreUpdated?.Invoke(_score);
         }
@@ -59,7 +59,7 @@ public class Game : MonoBehaviour
         Time.timeScale = 1;
     }
 
-    public void HandleCreatureEliminated(Creature creature)
+    public void HandleCreatureEliminated(ICreature creature)
     {
         creatureManager.RemoveCreature(creature);
         if (Multiplier < 0) Multiplier = 1;
@@ -68,7 +68,7 @@ public class Game : MonoBehaviour
         Currency += creature.Data.reward;
     }
 
-    public void HandleCreatureReachedEnd(Creature creature)
+    public void HandleCreatureReachedEnd(ICreature creature)
     {
         if (Multiplier > 0) Multiplier = -1;
         else Multiplier--;

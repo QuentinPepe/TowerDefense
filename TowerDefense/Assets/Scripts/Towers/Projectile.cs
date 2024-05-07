@@ -1,5 +1,6 @@
 ﻿using CreatureS;
 using UnityEngine;
+
 namespace Towers
 {
     public class Projectile : MonoBehaviour
@@ -32,7 +33,7 @@ namespace Towers
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.TryGetComponent(out Creature creature))
+            if (other.gameObject.TryGetComponent(out ICreature creature))
             {
                 creature.TakeDamage(_damage);
                 Destroy(gameObject);

@@ -15,7 +15,7 @@ namespace Waves
         private int _currentWaveIndex = 0;
         private IPhase _currentPhase;
 
-        public WaveSO CurrentWave { get; private set; }
+        public WaveSO CurrentWave { get; set; }
 
         [SerializeField] private GameObject placementPhaseUI;
         [SerializeField] private GameObject defensePhaseUI;
