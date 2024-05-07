@@ -1,6 +1,9 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using CreatureS;
+using Grid;
 using NSubstitute;
 using NUnit.Framework;
 using UnityEngine;
@@ -64,6 +67,56 @@ namespace Tests
 
             _creatureMock.Data.Returns(ScriptableObject.CreateInstance<CreatureSO>());
             _creatureManager.RemoveCreature(_creatureMock);
+
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator PoolDictionary_CreatesValidPools()
+        {
+            Dictionary<CreatureSO, ObjectPool<ICreature>> creaturePools = _creatureManager.PoolDictionary;
+
+            Assert.IsNotNull(creaturePools, "The PoolDictionary should be initialized.");
+            Assert.IsTrue(creaturePools.Count > 0, "There should be at least one pool available.");
+            Assert.IsInstanceOf<ObjectPool<ICreature>>(creaturePools.Values.First(), "The values in the PoolDictionary should be of type ObjectPool<ICreature>.");
+
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator SetStartPosition_SetsCorrectSpawnPoint()
+        {
+            CellPosition testPosition = new CellPosition(10, 10);
+            _creatureManager.SetStartPosition(testPosition);
+
+            Vector3 expectedSpawnPoint = new Vector3(testPosition.X + 0.5f, 0, testPosition.Z + 0.5f);
+
+            FieldInfo spawnPointField = typeof(CreatureManager).GetField("spawnPoint", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (spawnPointField != null)
+            {
+                Vector3 actualSpawnPoint = (Vector3)spawnPointField.GetValue(_creatureManager);
+
+                Assert.AreEqual(expectedSpawnPoint, actualSpawnPoint, "Spawn point should be correctly set to the provided cell position.");
+            }
+
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator SetEndPosition_SetsCorrectTargetPoint()
+        {
+            CellPosition testPosition = new CellPosition(5, 5);
+            _creatureManager.SetEndPosition(testPosition);
+
+            Vector3 expectedTargetPoint = new Vector3(testPosition.X + 0.5f, 0, testPosition.Z + 0.5f);
+
+            FieldInfo targetPointField = typeof(CreatureManager).GetField("targetPoint", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (targetPointField != null)
+            {
+                Vector3 actualTargetPoint = (Vector3)targetPointField.GetValue(_creatureManager);
+
+                Assert.AreEqual(expectedTargetPoint, actualTargetPoint, "Target point should be correctly set to the provided cell position.");
+            }
 
             yield return null;
         }

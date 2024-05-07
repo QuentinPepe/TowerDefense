@@ -39,7 +39,7 @@ public class Game : MonoBehaviour
     }
     public int Score {
         get => _score;
-        private set {
+        set {
             _score = value;
             OnScoreUpdated?.Invoke(_score);
         }

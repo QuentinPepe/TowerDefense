@@ -9,12 +9,12 @@ using Waves;
 
 namespace Tests
 {
-
     public class GameTests
     {
         private Game _game;
         private ICreature _creatureMock;
         private CreatureSO _creatureData;
+        private WaveSO _waveData;
 
         [UnitySetUp]
         public IEnumerator SetUp()
@@ -31,6 +31,9 @@ namespace Tests
 
             _creatureMock = Substitute.For<ICreature>();
             _creatureMock.Data.Returns(_creatureData);
+
+            _waveData = ScriptableObject.CreateInstance<WaveSO>();
+            _waveData.name = "Test Wave";
         }
 
         [UnityTest]
@@ -69,14 +72,13 @@ namespace Tests
             bool gameOverInvoked = false;
             _game.OnGameOver += (_) => gameOverInvoked = true;
 
-            _game.GetWaveManager().CurrentWave = ScriptableObject.CreateInstance<WaveSO>();
+            _game.GetWaveManager().CurrentWave = _waveData;
             _game.CheckGameOver(0);
 
             Assert.IsTrue(gameOverInvoked);
 
             yield return null;
         }
-
 
         [UnityTest]
         public IEnumerator GetWaveManager_WaveManagerNotNull_ReturnsWaveManager()
@@ -85,5 +87,50 @@ namespace Tests
             yield return null;
         }
 
+
+        [UnityTest]
+        public IEnumerator CurrencySetter_UpdatesCurrencyAndFiresEvent()
+        {
+            bool currencyEventTriggered = false;
+            _game.OnCurrencyUpdated += (_) => currencyEventTriggered = true;
+
+            int newCurrency = 1000;
+            _game.Currency = newCurrency;
+
+            Assert.AreEqual(newCurrency, _game.Currency);
+            Assert.IsTrue(currencyEventTriggered);
+
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator MultiplierSetter_UpdatesMultiplierAndFiresEvent()
+        {
+            bool multiplierEventTriggered = false;
+            _game.OnMultiplierUpdated += (_) => multiplierEventTriggered = true;
+
+            int newMultiplier = 5;
+            _game.Multiplier = newMultiplier;
+
+            Assert.AreEqual(newMultiplier, _game.Multiplier);
+            Assert.IsTrue(multiplierEventTriggered);
+
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator ScoreSetter_UpdatesScoreAndFiresEvent()
+        {
+            bool scoreEventTriggered = false;
+            _game.OnScoreUpdated += (_) => scoreEventTriggered = true;
+
+            int newScore = 1500;
+            _game.Score = newScore;
+
+            Assert.AreEqual(newScore, _game.Score);
+            Assert.IsTrue(scoreEventTriggered);
+
+            yield return null;
+        }
     }
 }
