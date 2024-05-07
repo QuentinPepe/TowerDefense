@@ -45,17 +45,21 @@ namespace Grid
             if (height < 1) height = 1;
             if (cellSize < 0.1f) cellSize = 0.1f;
 
+            #if UNITY_EDITOR
             if (!Application.isPlaying)
             {
                 EditorApplication.delayCall += UpdateGridWhenPossible;
             }
+            #endif
         }
 
         private void UpdateGridWhenPossible()
         {
             if (this == null) return;
             gridState.InitializeMatrix(width, height);
+            #if UNITY_EDITOR
             EditorApplication.delayCall -= UpdateGridWhenPossible;
+            #endif
             UpdateGrid();
         }
 
